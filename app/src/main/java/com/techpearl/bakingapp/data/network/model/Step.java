@@ -1,4 +1,4 @@
-package com.techpearl.bakingapp.data.model;
+package com.techpearl.bakingapp.data.network.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

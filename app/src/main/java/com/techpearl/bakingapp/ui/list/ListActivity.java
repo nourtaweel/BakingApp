@@ -5,15 +5,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.techpearl.bakingapp.R;
-import com.techpearl.bakingapp.data.model.Recipe;
-import com.techpearl.bakingapp.data.network.BakingApiClient;
-import com.techpearl.bakingapp.data.network.ServiceGenerator;
+import com.techpearl.bakingapp.data.DataManager;
+import com.techpearl.bakingapp.data.network.model.Recipe;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ListActivity extends AppCompatActivity implements RecipeListContract.ListView {
 
@@ -24,7 +19,7 @@ public class ListActivity extends AppCompatActivity implements RecipeListContrac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mPresenter = new ListPresenter();
+        mPresenter = new ListPresenter(DataManager.getsInstance());
         mPresenter.attachView(this);
         mPresenter.onLoadRecipesRequest();
 

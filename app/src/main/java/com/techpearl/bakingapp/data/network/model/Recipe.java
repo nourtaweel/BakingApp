@@ -1,4 +1,4 @@
-package com.techpearl.bakingapp.data.model;
+package com.techpearl.bakingapp.data.network.model;
 
 /**
  * Created by Nour on 0011, 11/4/18.

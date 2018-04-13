@@ -1,8 +1,11 @@
 package com.techpearl.bakingapp.ui.list;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.techpearl.bakingapp.data.model.Recipe;
+import com.techpearl.bakingapp.data.DataManager;
+import com.techpearl.bakingapp.data.network.RemoteCallback;
+import com.techpearl.bakingapp.data.network.model.Recipe;
 import com.techpearl.bakingapp.data.network.BakingApiClient;
 import com.techpearl.bakingapp.data.network.ServiceGenerator;
 import com.techpearl.bakingapp.ui.base.BaseMVPPresenter;
@@ -19,20 +22,28 @@ import retrofit2.Response;
 
 public class ListPresenter extends BaseMVPPresenter<RecipeListContract.ListView>
         implements RecipeListContract.ViewActions  {
+
+    private final DataManager dataManager;
+
+    public ListPresenter(@NonNull DataManager manager){
+        dataManager = manager;
+    }
     @Override
     public void onLoadRecipesRequest() {
-        BakingApiClient bakingApiClient = ServiceGenerator.createService(BakingApiClient.class);
-        Call<List<Recipe>> call =  bakingApiClient.recipes();
-        call.enqueue(new Callback<List<Recipe>>() {
+        if(!isViewAttached()){
+            return;
+        }
+        mView.showLoading();
+        dataManager.getRecipeList(new RemoteCallback<List<Recipe>>() {
             @Override
-            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                Log.d("Recipes", "count:" + response.body().size());
-                mView.showRecipes(response.body());
+            public void onSuccess(List<Recipe> response) {
+                Log.d("Recipes", "count:" + response.size());
+                mView.showRecipes(response);
             }
 
             @Override
-            public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                Log.d("Recipes", "error fetching recipes " + t.getMessage());
+            public void onFailure(Throwable throwable) {
+                Log.d("Recipes", "error fetching recipes " + throwable.getMessage());
             }
         });
     }
