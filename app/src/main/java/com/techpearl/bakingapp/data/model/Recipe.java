@@ -1,4 +1,4 @@
-package com.techpearl.bakingapp;
+package com.techpearl.bakingapp.data.model;
 
 /**
  * Created by Nour on 0011, 11/4/18.
@@ -7,7 +7,7 @@ package com.techpearl.bakingapp;
 import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

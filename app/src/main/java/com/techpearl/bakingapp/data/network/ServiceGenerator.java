@@ -1,4 +1,4 @@
-package com.techpearl.bakingapp;
+package com.techpearl.bakingapp.data.network;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

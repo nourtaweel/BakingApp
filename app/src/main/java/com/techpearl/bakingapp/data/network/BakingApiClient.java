@@ -1,4 +1,6 @@
-package com.techpearl.bakingapp;
+package com.techpearl.bakingapp.data.network;
+
+import com.techpearl.bakingapp.data.model.Recipe;
 
 import java.util.List;
 
