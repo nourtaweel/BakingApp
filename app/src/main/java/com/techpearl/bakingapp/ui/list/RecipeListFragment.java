@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,7 +55,7 @@ public class RecipeListFragment extends Fragment implements RecipeListContract.V
         mRecipesAdapter = new RecipesAdapter(null);
         ButterKnife.bind(this, root);
         mRecipesRecyclerView.setLayoutManager(
-                new GridLayoutManager(this.getContext(), 1));
+                new GridLayoutManager(this.getContext(), numberOfColumns()));
         mRecipesRecyclerView.setAdapter(mRecipesAdapter);
         return root;
     }
@@ -96,5 +97,19 @@ public class RecipeListFragment extends Fragment implements RecipeListContract.V
     @Override
     public boolean isActive() {
         return isAdded();
+    }
+
+    /* Dynamically determine number of columns for different widths
+     */
+    private int numberOfColumns() {
+        if(getActivity() == null){
+            return 0;
+        }
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int widthDividerDp = 370;
+        float widthDividerPx = widthDividerDp * (displayMetrics.densityDpi / 160f);
+        int width = displayMetrics.widthPixels;
+        return Math.round(width / widthDividerPx);
     }
 }
