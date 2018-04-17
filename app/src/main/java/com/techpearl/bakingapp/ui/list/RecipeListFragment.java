@@ -1,6 +1,9 @@
 package com.techpearl.bakingapp.ui.list;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,9 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.techpearl.bakingapp.Constants;
 import com.techpearl.bakingapp.R;
 import com.techpearl.bakingapp.data.network.model.Recipe;
+import com.techpearl.bakingapp.ui.recipe.DetailsActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,10 +31,14 @@ import butterknife.ButterKnife;
  * a Fragment the shows a List/Grid of available {@link Recipe}s
  */
 
-public class RecipeListFragment extends Fragment implements RecipeListContract.View {
+public class RecipeListFragment extends Fragment implements
+        RecipeListContract.View,
+        RecipesAdapter.RecipeClickListener{
 
+    private static final String TAG = RecipeListFragment.class.getSimpleName();
     private RecipeListContract.Presenter mPresenter;
     private RecipesAdapter mRecipesAdapter;
+    private RecipeClickListener mListener;
     @BindView(R.id.recyclerView_recipes) RecyclerView mRecipesRecyclerView;
 
     /*Required empty constructor*/
@@ -38,6 +48,16 @@ public class RecipeListFragment extends Fragment implements RecipeListContract.V
 
     public static RecipeListFragment newInstance(){
         return new RecipeListFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (RecipeClickListener) context;
+        }catch (ClassCastException exp){
+            Log.e(TAG, context.toString() + " must implement RecpieClickListener");
+        }
     }
 
     @Override
@@ -52,7 +72,7 @@ public class RecipeListFragment extends Fragment implements RecipeListContract.V
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_list_recipes, container, false);
-        mRecipesAdapter = new RecipesAdapter(null);
+        mRecipesAdapter = new RecipesAdapter(null, this);
         ButterKnife.bind(this, root);
         mRecipesRecyclerView.setLayoutManager(
                 new GridLayoutManager(this.getContext(), numberOfColumns()));
@@ -90,7 +110,7 @@ public class RecipeListFragment extends Fragment implements RecipeListContract.V
     }
 
     @Override
-    public void showRecipeDetails(int recipeId) {
+    public void showRecipeDetailsUi(Recipe recipe) {
 
     }
 
@@ -111,5 +131,17 @@ public class RecipeListFragment extends Fragment implements RecipeListContract.V
         float widthDividerPx = widthDividerDp * (displayMetrics.densityDpi / 160f);
         int width = displayMetrics.widthPixels;
         return Math.round(width / widthDividerPx);
+    }
+
+    @Override
+    public void onRecipeClicked(Recipe recipe) {
+        //mListener.onRecipeClicked(recipe);
+        Intent intent = new Intent(this.getContext(), DetailsActivity.class);
+        intent.putExtra(Constants.INTENT_EXTRA_RECIPE, recipe);
+        startActivity(intent);
+    }
+
+    public interface RecipeClickListener{
+        public void onRecipeClicked(Recipe recipe);
     }
 }

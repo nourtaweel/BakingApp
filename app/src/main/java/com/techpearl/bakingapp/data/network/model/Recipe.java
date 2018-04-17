@@ -4,6 +4,7 @@ package com.techpearl.bakingapp.data.network.model;
  * Created by Nour on 0011, 11/4/18.
  */
 
+import java.util.ArrayList;
 import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -33,11 +34,7 @@ public class Recipe implements Parcelable
     @Expose
     private String image;
     public final static Parcelable.Creator<Recipe> CREATOR = new Creator<Recipe>() {
-
-
-        @SuppressWarnings({
-                "unchecked"
-        })
+        @SuppressWarnings({"unchecked"})
         public Recipe createFromParcel(Parcel in) {
             return new Recipe(in);
         }
@@ -46,16 +43,17 @@ public class Recipe implements Parcelable
             return (new Recipe[size]);
         }
 
-    }
-            ;
+    };
 
     protected Recipe(Parcel in) {
-        this.id = ((int) in.readValue((int.class.getClassLoader())));
-        this.name = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.ingredients, (Ingredient.class.getClassLoader()));
-        in.readList(this.steps, (Step.class.getClassLoader()));
-        this.servings = ((int) in.readValue((int.class.getClassLoader())));
-        this.image = ((String) in.readValue((String.class.getClassLoader())));
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.ingredients = new ArrayList<>();
+        this.steps = new ArrayList<>();
+        in.readList(this.ingredients, Ingredient.class.getClassLoader());
+        in.readList(this.steps, Step.class.getClassLoader());
+        this.servings = in.readInt();
+        this.image = in.readString();
     }
 
     public Recipe() {
@@ -120,12 +118,12 @@ public class Recipe implements Parcelable
     }
 
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(id);
-        dest.writeValue(name);
+        dest.writeInt(id);
+        dest.writeString(name);
         dest.writeList(ingredients);
         dest.writeList(steps);
-        dest.writeValue(servings);
-        dest.writeValue(image);
+        dest.writeInt(servings);
+        dest.writeString(image);
     }
 
     public int describeContents() {

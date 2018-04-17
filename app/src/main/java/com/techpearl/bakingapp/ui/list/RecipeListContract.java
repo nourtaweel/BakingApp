@@ -15,13 +15,16 @@
  */
 package com.techpearl.bakingapp.ui.list;
 
+import android.support.annotation.NonNull;
+
 import com.techpearl.bakingapp.base.BasePresenter;
 import com.techpearl.bakingapp.data.network.model.Recipe;
 import com.techpearl.bakingapp.base.BaseView;
 
 import java.util.List;
 
-/*An interface to show the relationship between the view and presenter*/
+/*An interface to show the relationship between the view and presenter
+* in the main recipe list Activity*/
 public interface RecipeListContract {
 
     interface View extends BaseView<Presenter>{
@@ -29,13 +32,13 @@ public interface RecipeListContract {
         void hideLoadingIndicator();
         void showRecipes(List<Recipe> recipes);
         void showLoadingErrorMessage();
-        void showRecipeDetails(int recipeId);
+        void showRecipeDetailsUi(Recipe recipe);
         boolean isActive();
 
     }
     interface Presenter extends BasePresenter{
         void loadRecipes();
-        void openRecipeDetails(Recipe recipeToShow);
+        void openRecipeDetails(@NonNull Recipe recipeToShow);
     }
 
 

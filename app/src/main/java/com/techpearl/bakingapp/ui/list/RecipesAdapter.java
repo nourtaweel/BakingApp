@@ -20,14 +20,17 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Nour on 0016, 16/4/18.
+ * An Adapater for the list of recipes recycler view
  */
 
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHolder> {
 
     private List<Recipe> mRecipes;
+    private RecipeClickListener mListener;
 
-    public RecipesAdapter(List<Recipe> recipes){
+    public RecipesAdapter(List<Recipe> recipes, RecipeClickListener listener){
         mRecipes = recipes;
+        mListener = listener;
     }
     public void setRecipeList(List<Recipe> recipeList){
         this.mRecipes = recipeList;
@@ -56,13 +59,14 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         return mRecipes.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         @BindView(R.id.imageView_recipe_image) ImageView recipeImageView;
         @BindView(R.id.textView_recipe_name) TextView recipeNameTextView;
         @BindView(R.id.textView_servings) TextView recipeServingsTextView;
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
         public void bind(int index){
             //bind the views with data
@@ -78,5 +82,14 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
             //TODO: fix countable issue
             recipeServingsTextView.setText(r.getServings() + "servings");
         }
+
+        @Override
+        public void onClick(View v) {
+            mListener.onRecipeClicked(mRecipes.get(getAdapterPosition()));
+        }
+    }
+
+    public interface RecipeClickListener{
+        public void onRecipeClicked(Recipe recipe);
     }
 }

@@ -1,16 +1,20 @@
 package com.techpearl.bakingapp.ui.list;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.techpearl.bakingapp.Constants;
 import com.techpearl.bakingapp.R;
 import com.techpearl.bakingapp.data.DataManager;
 import com.techpearl.bakingapp.data.network.model.Recipe;
+import com.techpearl.bakingapp.ui.recipe.DetailsActivity;
 
 import java.util.List;
 
-public class RecipeListActivity extends AppCompatActivity {
+public class RecipeListActivity extends AppCompatActivity implements
+        RecipeListFragment.RecipeClickListener{
 
     private static final String TAG = RecipeListActivity.class.getSimpleName();
     private RecipeListPresenter mPresenter;
@@ -34,4 +38,10 @@ public class RecipeListActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onRecipeClicked(Recipe recipe) {
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra(Constants.INTENT_EXTRA_RECIPE, recipe);
+        startActivity(intent);
+    }
 }
