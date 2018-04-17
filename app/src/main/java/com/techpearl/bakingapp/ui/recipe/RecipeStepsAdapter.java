@@ -67,9 +67,9 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
         void bind(int index){
             Step step = mSteps.get(index);
             int imageRes = R.drawable.ic_list;
-            if(step.getVideoURL() != null){
+            if(!step.getVideoURL().isEmpty()){
                 imageRes = R.drawable.ic_video_player;
-            }else if(step.getThumbnailURL() != null){
+            }else if(!step.getThumbnailURL().isEmpty()){
                 imageRes = R.drawable.ic_camera;
             }
             mStepTypeImageView.setImageResource(imageRes);

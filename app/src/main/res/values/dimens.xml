@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin_cards">8dp</dimen>
+    <dimen name="margin_text">8dp</dimen>
+    <dimen name="step_type_dim">50dp</dimen>
+    <dimen name="image_card_margin">2dp</dimen>
 </resources>

@@ -10,9 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.techpearl.bakingapp.R;
+import com.techpearl.bakingapp.data.network.model.Ingredient;
 import com.techpearl.bakingapp.data.network.model.Recipe;
 import com.techpearl.bakingapp.data.network.model.Step;
 
@@ -26,9 +29,10 @@ import butterknife.ButterKnife;
 
 public class DetailsFragment extends Fragment implements DetailsContract.View{
 
-    @NonNull
-    private Recipe mRecipe;
     private RecipeStepsAdapter mStepsAdapter;
+    @BindView(R.id.textView_name) TextView mNameTextView;
+    @BindView(R.id.textView_servings) TextView mServingsNumTextView;
+    @BindView(R.id.imageView_recipe_image) ImageView mImageView;
     @BindView(R.id.textView_ingredients) TextView mIngredientsTextView;
     @BindView(R.id.recyclerView_steps) RecyclerView mStepsRecyclerView;
 
@@ -72,7 +76,27 @@ public class DetailsFragment extends Fragment implements DetailsContract.View{
 
     @Override
     public void showRecipeDetails(Recipe recipe) {
-        mIngredientsTextView.setText(recipe.getIngredients().toString());
+        mNameTextView.setText(recipe.getName());
+        mServingsNumTextView.setText(String.format(getString(R.string.servings_format)
+                , recipe.getServings()));
+        if(recipe.getImage().isEmpty()){
+           // mImageView.setVisibility(View.GONE);
+            mImageView.setImageResource(R.drawable.ic_recipe);
+        }else {
+            Picasso.get()
+                    .load(recipe.getImage())
+                    .error(R.drawable.ic_recipe)
+                    .into(mImageView);
+        }
+        String ingredientsString = "";
+        for(Ingredient ingredient : recipe.getIngredients()){
+            ingredientsString += "\u2022"
+                    + " " + ingredient.getQuantity()
+                    + " " + ingredient.getMeasure()
+                    + " " + ingredient.getIngredient()
+                    + "\n";
+        }
+        mIngredientsTextView.setText(ingredientsString);
         mStepsAdapter.setSteps(recipe.getSteps());
     }
 
