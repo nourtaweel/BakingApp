@@ -26,8 +26,11 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
 
     private List<Step> mSteps;
 
-    public RecipeStepsAdapter(List<Step> steps){
+    private StepClickListener mListener;
+
+    public RecipeStepsAdapter(List<Step> steps, StepClickListener listener){
         this.mSteps = steps;
+        this.mListener = listener;
     }
 
     //set data source and notify change to refresh ui
@@ -56,13 +59,14 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
         return mSteps.size();
     }
 
-    class StepViewHolder extends RecyclerView.ViewHolder{
+    class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         @BindView(R.id.imageView_step_type) ImageView mStepTypeImageView;
         @BindView(R.id.textView_step_short) TextView mStepShortDescriptionTextView;
 
         StepViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
         void bind(int index){
             Step step = mSteps.get(index);
@@ -75,5 +79,14 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
             mStepTypeImageView.setImageResource(imageRes);
             mStepShortDescriptionTextView.setText(step.getShortDescription());
         }
+
+        @Override
+        public void onClick(View v) {
+            mListener.onStepClicked(mSteps.get(getAdapterPosition()));
+        }
+    }
+
+    interface StepClickListener {
+        void onStepClicked(Step step);
     }
 }

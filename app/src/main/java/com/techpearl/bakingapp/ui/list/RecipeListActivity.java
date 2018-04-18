@@ -3,15 +3,12 @@ package com.techpearl.bakingapp.ui.list;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.techpearl.bakingapp.Constants;
 import com.techpearl.bakingapp.R;
 import com.techpearl.bakingapp.data.DataManager;
 import com.techpearl.bakingapp.data.network.model.Recipe;
-import com.techpearl.bakingapp.ui.recipe.DetailsActivity;
-
-import java.util.List;
+import com.techpearl.bakingapp.ui.recipe.RecipeDetailsActivity;
 
 public class RecipeListActivity extends AppCompatActivity implements
         RecipeListFragment.RecipeClickListener{
@@ -40,7 +37,7 @@ public class RecipeListActivity extends AppCompatActivity implements
 
     @Override
     public void onRecipeClicked(Recipe recipe) {
-        Intent intent = new Intent(this, DetailsActivity.class);
+        Intent intent = new Intent(this, RecipeDetailsActivity.class);
         intent.putExtra(Constants.INTENT_EXTRA_RECIPE, recipe);
         startActivity(intent);
     }

@@ -3,7 +3,6 @@ package com.techpearl.bakingapp.ui.list;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,9 +17,8 @@ import android.view.ViewGroup;
 import com.techpearl.bakingapp.Constants;
 import com.techpearl.bakingapp.R;
 import com.techpearl.bakingapp.data.network.model.Recipe;
-import com.techpearl.bakingapp.ui.recipe.DetailsActivity;
+import com.techpearl.bakingapp.ui.recipe.RecipeDetailsActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -136,7 +134,7 @@ public class RecipeListFragment extends Fragment implements
     @Override
     public void onRecipeClicked(Recipe recipe) {
         //mListener.onRecipeClicked(recipe);
-        Intent intent = new Intent(this.getContext(), DetailsActivity.class);
+        Intent intent = new Intent(this.getContext(), RecipeDetailsActivity.class);
         intent.putExtra(Constants.INTENT_EXTRA_RECIPE, recipe);
         startActivity(intent);
     }

@@ -11,10 +11,10 @@ import com.techpearl.bakingapp.data.network.model.Step;
 /**
  * Created by Nour on 0017, 17/4/18.
  * An interface to show the relationship between the view and presenter
- * in the main recipe list Activity
+ * in the main recipe list Fragment
  */
 
-public interface DetailsContract {
+public interface RecipeDetailsContract {
 
     interface View extends BaseView<Presenter>{
         void showRecipeDetails(Recipe recipe);

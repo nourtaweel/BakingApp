@@ -7,5 +7,5 @@
         android:id="@+id/fragment_recipe_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="com.techpearl.bakingapp.ui.recipe.DetailsFragment"/>
+        android:name="com.techpearl.bakingapp.ui.recipe.RecipeDetailsFragment"/>
 </android.support.constraint.ConstraintLayout>

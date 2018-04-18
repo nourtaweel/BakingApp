@@ -24,7 +24,7 @@ import com.techpearl.bakingapp.base.BaseView;
 import java.util.List;
 
 /*An interface to show the relationship between the view and presenter
-* in the main recipe list Activity*/
+* in the main recipe list Fragment*/
 public interface RecipeListContract {
 
     interface View extends BaseView<Presenter>{

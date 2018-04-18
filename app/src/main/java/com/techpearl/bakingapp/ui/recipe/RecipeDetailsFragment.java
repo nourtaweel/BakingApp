@@ -14,10 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.techpearl.bakingapp.Constants;
 import com.techpearl.bakingapp.R;
 import com.techpearl.bakingapp.data.network.model.Ingredient;
 import com.techpearl.bakingapp.data.network.model.Recipe;
 import com.techpearl.bakingapp.data.network.model.Step;
+import com.techpearl.bakingapp.ui.step.StepDetailsActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +29,9 @@ import butterknife.ButterKnife;
  * a Fragment the shows a List/Grid of available {@link Step}s
  */
 
-public class DetailsFragment extends Fragment implements DetailsContract.View{
+public class RecipeDetailsFragment extends Fragment implements
+        RecipeDetailsContract.View,
+        RecipeStepsAdapter.StepClickListener{
 
     private RecipeStepsAdapter mStepsAdapter;
     @BindView(R.id.textView_name) TextView mNameTextView;
@@ -36,15 +40,15 @@ public class DetailsFragment extends Fragment implements DetailsContract.View{
     @BindView(R.id.textView_ingredients) TextView mIngredientsTextView;
     @BindView(R.id.recyclerView_steps) RecyclerView mStepsRecyclerView;
 
-    private DetailsContract.Presenter mPresenter;
+    private RecipeDetailsContract.Presenter mPresenter;
 
     //required empty constructor
-    public DetailsFragment(){
+    public RecipeDetailsFragment(){
 
     }
 
-    public static DetailsFragment newInstance(){
-        DetailsFragment fragment = new DetailsFragment();
+    public static RecipeDetailsFragment newInstance(){
+        RecipeDetailsFragment fragment = new RecipeDetailsFragment();
         return fragment;
     }
 
@@ -55,7 +59,7 @@ public class DetailsFragment extends Fragment implements DetailsContract.View{
     }
 
     @Override
-    public void setPresenter(DetailsContract.Presenter presenter) {
+    public void setPresenter(RecipeDetailsContract.Presenter presenter) {
         this.mPresenter = presenter;
     }
 
@@ -67,7 +71,7 @@ public class DetailsFragment extends Fragment implements DetailsContract.View{
         View root = inflater.inflate(R.layout.fragment_recipe_details,
                 container,
                 false);
-        mStepsAdapter = new RecipeStepsAdapter(null);
+        mStepsAdapter = new RecipeStepsAdapter(null, this);
         ButterKnife.bind(this, root);
         mStepsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mStepsRecyclerView.setAdapter(mStepsAdapter);
@@ -107,11 +111,18 @@ public class DetailsFragment extends Fragment implements DetailsContract.View{
 
     @Override
     public void showStepDetailsUi(Step step) {
-
+        Intent intent = new Intent(this.getContext(), StepDetailsActivity.class);
+        intent.putExtra(Constants.INTENT_EXTRA_STEP, step);
+        startActivity(intent);
     }
 
     @Override
     public boolean isActive() {
         return isAdded();
+    }
+
+    @Override
+    public void onStepClicked(Step step) {
+        mPresenter.openStepDetails(step);
     }
 }
