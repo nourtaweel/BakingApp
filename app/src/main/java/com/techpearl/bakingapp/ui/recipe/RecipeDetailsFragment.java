@@ -1,5 +1,6 @@
 package com.techpearl.bakingapp.ui.recipe;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -42,14 +43,26 @@ public class RecipeDetailsFragment extends Fragment implements
 
     private RecipeDetailsContract.Presenter mPresenter;
 
+    private OnStepClickListener mListener;
+
     //required empty constructor
     public RecipeDetailsFragment(){
-
     }
 
     public static RecipeDetailsFragment newInstance(){
         RecipeDetailsFragment fragment = new RecipeDetailsFragment();
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+            mListener = (OnStepClickListener) context;
+        }catch (ClassCastException exp){
+            throw new ClassCastException(context.toString()
+                    + " must implement OnStepClickListener interface");
+        }
     }
 
     @Override
@@ -111,9 +124,7 @@ public class RecipeDetailsFragment extends Fragment implements
 
     @Override
     public void showStepDetailsUi(Step step) {
-        Intent intent = new Intent(this.getContext(), StepDetailsActivity.class);
-        intent.putExtra(Constants.INTENT_EXTRA_STEP, step);
-        startActivity(intent);
+        mListener.onStepClicked(step);
     }
 
     @Override
@@ -124,5 +135,9 @@ public class RecipeDetailsFragment extends Fragment implements
     @Override
     public void onStepClicked(Step step) {
         mPresenter.openStepDetails(step);
+    }
+
+    interface OnStepClickListener {
+        void onStepClicked(Step step);
     }
 }

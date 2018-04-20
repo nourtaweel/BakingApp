@@ -125,7 +125,7 @@ public class RecipeListFragment extends Fragment implements
         }
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int widthDividerDp = 370;
+        int widthDividerDp = 300;
         float widthDividerPx = widthDividerDp * (displayMetrics.densityDpi / 160f);
         int width = displayMetrics.widthPixels;
         return Math.round(width / widthDividerPx);
