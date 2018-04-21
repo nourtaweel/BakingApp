@@ -1,5 +1,6 @@
 package com.techpearl.bakingapp.ui.step;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -25,6 +26,13 @@ public class StepDetailsPresenter implements StepDetailsContract.Presenter {
     @Override
     public void start() {
         loadStep(mStep);
+    }
+
+    @Override
+    public Bundle getState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("step", mStep);
+        return bundle;
     }
 
     @Override

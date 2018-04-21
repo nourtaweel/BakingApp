@@ -14,12 +14,12 @@ public class RecipeListActivity extends AppCompatActivity implements
         RecipeListFragment.RecipeClickListener{
 
     private static final String TAG = RecipeListActivity.class.getSimpleName();
-    private RecipeListPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         RecipeListFragment recipeListFragment = (RecipeListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_recipe_list);
         if(recipeListFragment == null){
@@ -30,7 +30,7 @@ public class RecipeListActivity extends AppCompatActivity implements
                     .replace(R.id.fragment_recipe_list,recipeListFragment)
                     .commit();
         }
-        mPresenter = new RecipeListPresenter(DataManager.getsInstance(), recipeListFragment);
+        new RecipeListPresenter(DataManager.getsInstance(), recipeListFragment);
 
 
     }

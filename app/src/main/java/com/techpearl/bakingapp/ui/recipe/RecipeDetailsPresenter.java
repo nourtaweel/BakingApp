@@ -1,5 +1,6 @@
 package com.techpearl.bakingapp.ui.recipe;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -26,6 +27,11 @@ public class RecipeDetailsPresenter implements RecipeDetailsContract.Presenter {
     @Override
     public void start() {
         loadRecipe(mRecipe);
+    }
+
+    @Override
+    public Bundle getState() {
+        return null;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.techpearl.bakingapp.ui.list;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -26,6 +27,11 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
     @Override
     public void start() {
         loadRecipes();
+    }
+
+    @Override
+    public Bundle getState() {
+        return null;
     }
 
     @Override

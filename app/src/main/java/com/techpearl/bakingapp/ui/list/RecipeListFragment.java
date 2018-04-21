@@ -48,6 +48,7 @@ public class RecipeListFragment extends Fragment implements
         return new RecipeListFragment();
     }
 
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

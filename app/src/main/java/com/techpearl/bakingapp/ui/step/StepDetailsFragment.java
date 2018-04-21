@@ -66,6 +66,7 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     @BindView(R.id.main_media_frame)
     View mMediaFrame;
     private boolean mExoPlayerFullscreen = false;
+    private long mPosition = 0;
 
     public StepDetailsFragment(){
 
@@ -77,6 +78,24 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     @Override
     public void setPresenter(StepDetailsContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState != null){
+            Bundle bundle = savedInstanceState.getBundle("presenter_state");
+            new StepDetailsPresenter(this, (Step) bundle.getParcelable("step"));
+            mPosition = savedInstanceState.getLong("player_position");
+
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("presenter_state", mPresenter.getState());
+        outState.putLong("player_position", mPlayer.getCurrentPosition());
     }
 
     @Override
@@ -141,10 +160,12 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
         mPlayerView.setPlayer(mPlayer);
         //prepare DataSource
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this.getContext(),
-                Util.getUserAgent(this.getContext(), "yourApplicationName"));
+                Util.getUserAgent(this.getContext(), "bakingApp"));
         MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(Uri.parse(videoURL));
         mPlayer.prepare(videoSource);
+        mPlayer.seekTo(mPosition);
+        mPlayer.setPlayWhenReady(true);
     }
 
     /**
@@ -162,7 +183,6 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
         if(mPlayer != null){
             releasePlayer();
         }
-
     }
 
     @Override
