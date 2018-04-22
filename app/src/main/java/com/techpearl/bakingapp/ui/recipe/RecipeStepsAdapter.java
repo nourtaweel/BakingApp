@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.techpearl.bakingapp.Constants;
 import com.techpearl.bakingapp.R;
 import com.techpearl.bakingapp.data.network.model.Step;
 
@@ -28,6 +27,8 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
 
     private StepClickListener mListener;
 
+    private int selectedPosition = RecyclerView.NO_POSITION;
+
     public RecipeStepsAdapter(List<Step> steps, StepClickListener listener){
         this.mSteps = steps;
         this.mListener = listener;
@@ -38,18 +39,28 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
         this.mSteps = steps;
         notifyDataSetChanged();
     }
+
+    public void setSelectedPosition(int position){
+        selectedPosition = position;
+        notifyItemChanged(position);
+    }
+    public int getSelectedPosition(){
+        return selectedPosition;
+    }
     @NonNull
     @Override
     public StepViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        return new StepViewHolder(inflater.inflate(R.layout.step_card, parent, false));
+        return new StepViewHolder(inflater.inflate(R.layout.step_item_layout, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull StepViewHolder holder, int position) {
         holder.bind(position);
+        //holder.itemView.setSelected(selectedPosition == position);
     }
+
 
     @Override
     public int getItemCount() {
@@ -62,6 +73,7 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
     class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         @BindView(R.id.imageView_step_type) ImageView mStepTypeImageView;
         @BindView(R.id.textView_step_short) TextView mStepShortDescriptionTextView;
+        @BindView(R.id.step_container) View mRoot;
 
         StepViewHolder(View itemView) {
             super(itemView);
@@ -78,11 +90,20 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
             }
             mStepTypeImageView.setImageResource(imageRes);
             mStepShortDescriptionTextView.setText(step.getShortDescription());
+            mRoot.setSelected(selectedPosition == index);
         }
 
         @Override
         public void onClick(View v) {
+            highlightSelected(getAdapterPosition());
             mListener.onStepClicked(mSteps.get(getAdapterPosition()));
+        }
+
+        private void highlightSelected(int newPosition) {
+            int oldPosition = selectedPosition;
+            selectedPosition = newPosition;
+            notifyItemChanged(selectedPosition);
+            notifyItemChanged(oldPosition);
         }
     }
 

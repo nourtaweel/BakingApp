@@ -75,9 +75,11 @@ public class Ingredient implements Parcelable
 
     @Override
     public String toString() {
-        return "quantity " + quantity +
-                "\n measure " + measure +
-                "\n ingredient " + ingredient;
+        return "\u2022"
+                + " " + quantity
+                + " " + measure
+                + " " + ingredient
+                + "\n";
     }
 
     public void writeToParcel(Parcel dest, int flags) {

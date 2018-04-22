@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/margin_cards">
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/step_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/step_background">
 
         <ImageView
             android:id="@+id/imageView_step_type"
             android:layout_width="@dimen/step_type_dim"
             android:layout_height="@dimen/step_type_dim"
-            android:layout_margin="@dimen/image_card_margin"/>
+            android:layout_margin="@dimen/step_item_margin"/>
         <TextView
             android:id="@+id/textView_step_short"
             android:layout_width="wrap_content"
@@ -21,4 +19,3 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/margin_text"/>
     </LinearLayout>
-</android.support.v7.widget.CardView>

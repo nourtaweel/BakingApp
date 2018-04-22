@@ -95,7 +95,10 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable("presenter_state", mPresenter.getState());
-        outState.putLong("player_position", mPlayer.getCurrentPosition());
+        if(mPlayer != null){
+            outState.putLong("player_position", mPlayer.getCurrentPosition());
+        }
+
     }
 
     @Override

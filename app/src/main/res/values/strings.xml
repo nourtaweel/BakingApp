@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">BakingApp</string>
     <string name="ingredients_label">Ingredients</string>
-    <string name="servings_format">%d servings</string>
+    <string name="servings_format">Servings: %d</string>
 </resources>

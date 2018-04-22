@@ -66,6 +66,12 @@ public class RecipeDetailsFragment extends Fragment implements
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("selected_position", mStepsAdapter.getSelectedPosition());
+
+    }
+    @Override
     public void onResume() {
         super.onResume();
         mPresenter.start();
@@ -88,6 +94,10 @@ public class RecipeDetailsFragment extends Fragment implements
         ButterKnife.bind(this, root);
         mStepsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mStepsRecyclerView.setAdapter(mStepsAdapter);
+        if(savedInstanceState != null){
+            int savedSelectedPosition = savedInstanceState.getInt("selected_position");
+            mStepsAdapter.setSelectedPosition(savedSelectedPosition);
+        }
         return root;
     }
 
@@ -97,21 +107,17 @@ public class RecipeDetailsFragment extends Fragment implements
         mServingsNumTextView.setText(String.format(getString(R.string.servings_format)
                 , recipe.getServings()));
         if(recipe.getImage().isEmpty()){
-           // mImageView.setVisibility(View.GONE);
-            mImageView.setImageResource(R.drawable.ic_recipe);
+            mImageView.setVisibility(View.GONE);
         }else {
             Picasso.get()
                     .load(recipe.getImage())
+                    .placeholder(R.drawable.ic_picture)
                     .error(R.drawable.ic_recipe)
                     .into(mImageView);
         }
         String ingredientsString = "";
         for(Ingredient ingredient : recipe.getIngredients()){
-            ingredientsString += "\u2022"
-                    + " " + ingredient.getQuantity()
-                    + " " + ingredient.getMeasure()
-                    + " " + ingredient.getIngredient()
-                    + "\n";
+            ingredientsString += ingredient.toString();
         }
         mIngredientsTextView.setText(ingredientsString);
         mStepsAdapter.setSteps(recipe.getSteps());
