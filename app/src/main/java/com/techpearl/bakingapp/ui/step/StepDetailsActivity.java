@@ -50,18 +50,19 @@ public class StepDetailsActivity extends AppCompatActivity {
                     bundle.getBoolean("is_full_screen"));
             return;
         }*/
-       if(savedInstanceState != null)
-           return;
-        //no saved state is found, create a new presenter
-        Step step = null;
-        //get the step from the starting intent
-        if(getIntent().hasExtra(Constants.INTENT_EXTRA_STEP)){
-            step = getIntent().getParcelableExtra(Constants.INTENT_EXTRA_STEP);
+        //if no saved state is found, create a new presenter
+        if(savedInstanceState == null){
+            Step step = null;
+            //get the step from the starting intent
+            if(getIntent().hasExtra(Constants.INTENT_EXTRA_STEP)){
+                step = getIntent().getParcelableExtra(Constants.INTENT_EXTRA_STEP);
+            }
+            //always open fullscreen in landscape
+            //Todo: what happens if no media?
+            boolean isLandscape = getResources().getConfiguration().orientation
+                    == Configuration.ORIENTATION_LANDSCAPE;
+            new StepDetailsPresenter(stepDetailsFragment, step, isLandscape);
         }
-        //always open fullscreen in landscape
-        //Todo: what happens if no media?
-        boolean isLandscape = getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE;
-        new StepDetailsPresenter(stepDetailsFragment, step, isLandscape);
+
     }
 }

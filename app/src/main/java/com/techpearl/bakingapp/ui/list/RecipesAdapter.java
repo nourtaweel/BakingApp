@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Nour on 0016, 16/4/18.
- * An Adapater for the list of recipes recycler view
+ * An Adapter for the list of recipes recycler view
  */
 
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHolder> {
