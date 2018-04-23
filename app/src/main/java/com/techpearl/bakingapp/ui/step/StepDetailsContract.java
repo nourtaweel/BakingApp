@@ -13,10 +13,16 @@ import com.techpearl.bakingapp.data.network.model.Step;
 public interface StepDetailsContract {
     interface View extends BaseView<Presenter>{
         void showStepDetails(Step step);
+        void showFullScreenDialog();
+        void goToNormalScreen();
         boolean isActive();
     }
 
     interface Presenter extends BasePresenter{
         void loadStep(Step step);
+        void openFullScreen();
+        void closeFullScreen();
+        void onToggleFullScreen();
+        void onBackPressedInFullScreenDialog();
     }
 }

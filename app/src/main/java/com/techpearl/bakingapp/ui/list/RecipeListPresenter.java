@@ -35,6 +35,11 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
     }
 
     @Override
+    public void restoreState(Bundle state) {
+
+    }
+
+    @Override
     public void loadRecipes() {
         //TODO: here add idling resources logic
 

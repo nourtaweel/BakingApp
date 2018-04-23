@@ -55,7 +55,7 @@ public class RecipeListFragment extends Fragment implements
         try {
             mListener = (RecipeClickListener) context;
         }catch (ClassCastException exp){
-            Log.e(TAG, context.toString() + " must implement RecpieClickListener");
+            Log.e(TAG, context.toString() + " must implement RecipeClickListener");
         }
     }
 

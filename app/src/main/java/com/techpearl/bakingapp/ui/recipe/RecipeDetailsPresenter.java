@@ -35,6 +35,11 @@ public class RecipeDetailsPresenter implements RecipeDetailsContract.Presenter {
     }
 
     @Override
+    public void restoreState(Bundle state) {
+
+    }
+
+    @Override
     public void loadRecipe(Recipe recipe) {
         mRecipe = recipe;
         mDetailsView.showRecipeDetails(mRecipe);

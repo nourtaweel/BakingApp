@@ -2,10 +2,8 @@ package com.techpearl.bakingapp.ui.recipe;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import com.techpearl.bakingapp.Constants;
@@ -21,29 +19,44 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Nour on 0017, 17/4/18.
+ * shows the recipe details (ingredient + steps)
+ * if the width more than 600dp, then this will be a two pane Activity with recipeDetailsFragment as
+ * master and mStepDetailsFragment in the details pane
  */
 
 public class RecipeDetailsActivity extends AppCompatActivity
 implements RecipeDetailsFragment.OnStepClickListener{
+    //tag for Logging
     private static final String TAG = RecipeDetailsActivity.class.getSimpleName();
-    @Nullable @BindView(R.id.step_detail_container)
-    View mStepDetailsFragment;
+    //step details container if in two-pane mode
+    //boolean to save the two-pane/one-pane mode status
     private boolean mTwoPane;
-    private StepDetailsFragment stepDetailsFragment;
+    @Nullable @BindView(R.id.step_detail_container)
+    View mStepDetailsContainerView;
+    //StepDetailsFragment reference, null if not in two-pane
+    private StepDetailsFragment mStepDetailsFragment;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
         ButterKnife.bind(this);
-        mTwoPane = (mStepDetailsFragment != null);
-        RecipeDetailsFragment recipeDetailsFragment = (RecipeDetailsFragment) getSupportFragmentManager()
+        //if can find details container view, then it is two-pane mode
+        mTwoPane = (mStepDetailsContainerView != null);
+        //find the static recipeDetailsFragment
+        RecipeDetailsFragment recipeDetailsFragment = (RecipeDetailsFragment)
+                getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_recipe_details);
+        //get the recipe to display from the starting intent and create a new presenter for the
+        // master fragment
         if(getIntent().hasExtra(Constants.INTENT_EXTRA_RECIPE)){
             Recipe recipe = getIntent().getParcelableExtra(Constants.INTENT_EXTRA_RECIPE);
             new RecipeDetailsPresenter(recipeDetailsFragment, recipe);
         }
-
+        //Todo: remove next code
+/*
         if(recipeDetailsFragment == null){
             //create the fragment
             recipeDetailsFragment = RecipeDetailsFragment.newInstance();
@@ -51,42 +64,57 @@ implements RecipeDetailsFragment.OnStepClickListener{
                     .beginTransaction()
                     .replace(R.id.fragment_recipe_details, recipeDetailsFragment)
                     .commit();
-        }
+        }*/
+
+        //if in two-pane mode, retrieve the previous details fragment if any
         if(mTwoPane && savedInstanceState != null){
-            stepDetailsFragment = (StepDetailsFragment) getSupportFragmentManager().getFragment(savedInstanceState, "stepDetailsSavedFragment");
-            if(stepDetailsFragment != null){
+            mStepDetailsFragment = (StepDetailsFragment) getSupportFragmentManager()
+                    .getFragment(savedInstanceState, "stepDetailsSavedFragment");
+            if(mStepDetailsFragment != null){
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.step_detail_container, stepDetailsFragment)
+                        .replace(R.id.step_detail_container, mStepDetailsFragment)
                         .commit();
             }
+           /* //re-create the presenter
+            Bundle bundle = savedInstanceState.getBundle("presenter_state");
+            if(bundle != null)
+                new StepDetailsPresenter(mStepDetailsFragment,
+                        (Step) bundle.getParcelable("step"),
+                        bundle.getBoolean("is_full_screen"));*/
         }
 
     }
 
+    /**
+     * used to save the details fragment instance*/
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(stepDetailsFragment != null){
-            getSupportFragmentManager().putFragment(outState, "stepDetailsSavedFragment", stepDetailsFragment);
+        if(mStepDetailsFragment != null){
+            getSupportFragmentManager().putFragment(outState, "stepDetailsSavedFragment", mStepDetailsFragment);
         }
 
     }
 
+    /*callback method when a step is clicked*/
     @Override
     public void onStepClicked(Step step) {
+        //if not in master/details, open a new activity to show the step details
         if(!mTwoPane){
             Intent intent = new Intent(this, StepDetailsActivity.class);
             intent.putExtra(Constants.INTENT_EXTRA_STEP, step);
             startActivity(intent);
-        }else{
-                //create the Fragment
-                stepDetailsFragment = StepDetailsFragment.newInstance();
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.step_detail_container, stepDetailsFragment)
-                        .commit();
-            new StepDetailsPresenter(stepDetailsFragment, step);
+        }//if in master/details, create a new stepDetailsFragment and add it to the screen
+        else{
+            //create the Fragment
+            mStepDetailsFragment = StepDetailsFragment.newInstance();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.step_detail_container, mStepDetailsFragment)
+                    .commit();
+            //create the presenter for the fragment
+            new StepDetailsPresenter(mStepDetailsFragment, step, false);
         }
 
     }

@@ -42,6 +42,8 @@ import butterknife.ButterKnife;
 /**
  * Created by Nour on 0018, 18/4/18.
  * A Fragment that shows the step media and/or the instructions
+ * this fragment is displayed in a stand-alone StepDetailsActivity
+ * or as the detail part in the master/detail screen in RecipeDetailsActivity (on a tablet)
  */
 
 public class StepDetailsFragment extends Fragment implements StepDetailsContract.View{
@@ -65,7 +67,6 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     View mFullScreenButton;
     @BindView(R.id.main_media_frame)
     View mMediaFrame;
-    private boolean mExoPlayerFullscreen = false;
     private long mPosition = 0;
 
     public StepDetailsFragment(){
@@ -83,9 +84,14 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //retrieve the presenter state & player position if this fragment is getting recreated
         if(savedInstanceState != null){
-            Bundle bundle = savedInstanceState.getBundle("presenter_state");
-            new StepDetailsPresenter(this, (Step) bundle.getParcelable("step"));
+            Bundle presenterSavedState = savedInstanceState.getBundle("presenter_state");
+            if(presenterSavedState != null){
+                mPresenter = new StepDetailsPresenter(this, null, false);
+                mPresenter.restoreState(presenterSavedState);
+            }
+            //mPresenter.restoreState(savedInstanceState.getBundle("presenter_state"));
             mPosition = savedInstanceState.getLong("player_position");
 
         }
@@ -94,11 +100,12 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("presenter_state", mPresenter.getState());
+        //save the presenter state (step object + fullscreen mode boolean)
+        outState.putBundle("presenter_state", mPresenter.getState());
+        //saving the player position if available
         if(mPlayer != null){
             outState.putLong("player_position", mPlayer.getCurrentPosition());
         }
-
     }
 
     @Override
@@ -121,7 +128,6 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
         mThumbnailImageView.setVisibility(View.GONE);
         initFullscreenButton();
         initFullscreenDialog();
-
         return root;
     }
 
@@ -142,6 +148,22 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
                     .into(mThumbnailImageView);
         }
 
+    }
+
+    @Override
+    public void showFullScreenDialog() {
+        ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
+        mFullScreenDialog.addContentView(mPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_skrink));
+        mFullScreenDialog.show();
+    }
+
+    @Override
+    public void goToNormalScreen() {
+        ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
+        ((FrameLayout) getActivity().findViewById(R.id.main_media_frame)).addView(mPlayerView);
+        mFullScreenDialog.dismiss();
+        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_expand));
     }
 
     /**
@@ -201,10 +223,7 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
         mFullScreenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mExoPlayerFullscreen)
-                    openFullscreenDialog();
-                else
-                    closeFullscreenDialog();
+                mPresenter.onToggleFullScreen();
             }
         });
     }
@@ -214,26 +233,10 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
         mFullScreenDialog = new Dialog(this.getContext(),
                 android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
             public void onBackPressed() {
-                if (mExoPlayerFullscreen)
-                    closeFullscreenDialog();
+                mPresenter.onBackPressedInFullScreenDialog();
                 super.onBackPressed();
             }
         };
     }
 
-    private void openFullscreenDialog() {
-
-        ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
-        mFullScreenDialog.addContentView(mPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_skrink));
-        mExoPlayerFullscreen = true;
-        mFullScreenDialog.show();
-    }
-    private void closeFullscreenDialog() {
-        ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
-        ((FrameLayout) getActivity().findViewById(R.id.main_media_frame)).addView(mPlayerView);
-        mExoPlayerFullscreen = false;
-        mFullScreenDialog.dismiss();
-        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_expand));
-    }
 }

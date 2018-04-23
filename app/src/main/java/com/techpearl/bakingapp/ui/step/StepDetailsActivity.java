@@ -1,5 +1,6 @@
 package com.techpearl.bakingapp.ui.step;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -15,11 +16,13 @@ import com.techpearl.bakingapp.ui.recipe.RecipeDetailsPresenter;
 import butterknife.ButterKnife;
 
 /**
+ * This Activity is displayed only if the screen width is less than 600dp
+ * to show a step details (media + description)
  * Created by Nour on 0018, 18/4/18.
  */
 
 public class StepDetailsActivity extends AppCompatActivity {
-
+    //tag for logging
     private final static String TAG = StepDetailsActivity.class.getSimpleName();
 
     @Override
@@ -27,9 +30,10 @@ public class StepDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_details);
         ButterKnife.bind(this);
+        //find the static fragment in the layout
         StepDetailsFragment stepDetailsFragment = (StepDetailsFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_step);
-
+        //Todo: remove the creation code as never accessed
         if(stepDetailsFragment == null){
             //create the Fragment
             stepDetailsFragment = StepDetailsFragment.newInstance();
@@ -38,12 +42,26 @@ public class StepDetailsActivity extends AppCompatActivity {
                     .replace(R.id.fragment_step, stepDetailsFragment)
                     .commit();
         }
+        //recreate the presenter from saved state if any
+       /* if(savedInstanceState != null){
+            Bundle bundle = savedInstanceState.getBundle("presenter_state");
+            new StepDetailsPresenter(stepDetailsFragment,
+                    (Step) bundle.getParcelable("step"),
+                    bundle.getBoolean("is_full_screen"));
+            return;
+        }*/
+       if(savedInstanceState != null)
+           return;
+        //no saved state is found, create a new presenter
         Step step = null;
+        //get the step from the starting intent
         if(getIntent().hasExtra(Constants.INTENT_EXTRA_STEP)){
-            //Log.d(TAG, getIntent().getExtras().getParcelable(Constants.INTENT_EXTRA_RECIPE).toString());
             step = getIntent().getParcelableExtra(Constants.INTENT_EXTRA_STEP);
         }
-        //create the presenter
-        new StepDetailsPresenter(stepDetailsFragment, step);
+        //always open fullscreen in landscape
+        //Todo: what happens if no media?
+        boolean isLandscape = getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE;
+        new StepDetailsPresenter(stepDetailsFragment, step, isLandscape);
     }
 }

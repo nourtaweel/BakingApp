@@ -9,6 +9,6 @@ import android.os.Parcelable;
 
 public interface BasePresenter {
     void start();
-
     Bundle getState();
+    void restoreState(Bundle state);
 }
