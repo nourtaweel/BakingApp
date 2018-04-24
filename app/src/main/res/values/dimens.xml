@@ -4,5 +4,6 @@
     <dimen name="margin_text">8dp</dimen>
     <dimen name="step_type_dim">35dp</dimen>
     <dimen name="step_item_margin">10dp</dimen>
+    <dimen name="widget_padding">4dp</dimen>
 
 </resources>

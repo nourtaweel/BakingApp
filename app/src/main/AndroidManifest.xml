@@ -14,11 +14,21 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                
+
             </intent-filter>
         </activity>
         <activity android:name=".ui.recipe.RecipeDetailsActivity" />
         <activity android:name=".ui.step.StepDetailsActivity" />
+        <receiver android:name=".ui.widget.RecipeWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_appwidget_info"/>
+        </receiver>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    
 </manifest>
