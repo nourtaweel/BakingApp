@@ -130,4 +130,11 @@ public class Recipe implements Parcelable
         return 0;
     }
 
+    public String getIngredientListString(){
+        String ingredientsString = "";
+        for(Ingredient ingredient : getIngredients()){
+            ingredientsString += ingredient.toString();
+        }
+        return ingredientsString;
+    }
 }

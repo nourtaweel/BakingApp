@@ -115,11 +115,7 @@ public class RecipeDetailsFragment extends Fragment implements
                     .error(R.drawable.ic_recipe)
                     .into(mImageView);
         }
-        String ingredientsString = "";
-        for(Ingredient ingredient : recipe.getIngredients()){
-            ingredientsString += ingredient.toString();
-        }
-        mIngredientsTextView.setText(ingredientsString);
+        mIngredientsTextView.setText(recipe.getIngredientListString());
         mStepsAdapter.setSteps(recipe.getSteps());
     }
 

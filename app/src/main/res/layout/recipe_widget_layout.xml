@@ -5,7 +5,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/widget_padding">
+    android:layout_margin="@dimen/widget_padding"
+    android:padding="8dp"
+    android:background="@color/color_widget_bg"
+    >
 
     <TextView
         android:id="@+id/textView_recipe_name"

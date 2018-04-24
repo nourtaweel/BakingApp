@@ -134,10 +134,7 @@ public class RecipeListFragment extends Fragment implements
 
     @Override
     public void onRecipeClicked(Recipe recipe) {
-        //mListener.onRecipeClicked(recipe);
-        Intent intent = new Intent(this.getContext(), RecipeDetailsActivity.class);
-        intent.putExtra(Constants.INTENT_EXTRA_RECIPE, recipe);
-        startActivity(intent);
+        mListener.onRecipeClicked(recipe);
     }
 
     public interface RecipeClickListener{
