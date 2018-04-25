@@ -2,6 +2,7 @@ package com.techpearl.bakingapp.ui.recipe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -53,6 +54,13 @@ implements RecipeDetailsFragment.OnStepClickListener{
         // master fragment
         if(getIntent().hasExtra(Constants.INTENT_EXTRA_RECIPE)){
             Recipe recipe = getIntent().getParcelableExtra(Constants.INTENT_EXTRA_RECIPE);
+            new RecipeDetailsPresenter(recipeDetailsFragment, recipe);
+        }else if(getIntent().hasExtra(Constants.INTENT_EXTRA_RECIPE_MARSHALED)){
+            byte [] bytes = getIntent().getByteArrayExtra(Constants.INTENT_EXTRA_RECIPE_MARSHALED);
+            Parcel parcel = Parcel.obtain();
+            parcel.unmarshall(bytes, 0, bytes.length);
+            parcel.setDataPosition(0);
+            Recipe recipe = Recipe.CREATOR.createFromParcel(parcel);
             new RecipeDetailsPresenter(recipeDetailsFragment, recipe);
         }
         //Todo: remove next code

@@ -9,4 +9,5 @@ public class Constants {
     public static final String INTENT_EXTRA_RECIPE = "extra_recipe";
     public static final String INTENT_EXTRA_STEP = "extra_step";
 
+    public static final String INTENT_EXTRA_RECIPE_MARSHALED = "extra_recipe_marshaled";
 }

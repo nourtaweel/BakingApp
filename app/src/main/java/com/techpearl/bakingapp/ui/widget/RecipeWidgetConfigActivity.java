@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.RemoteViews;
@@ -46,7 +47,6 @@ public class RecipeWidgetConfigActivity extends AppCompatActivity implements
        widgetManager = AppWidgetManager.getInstance(this);
         remoteViews = new RemoteViews(this.getPackageName(), R.layout.recipe_widget_layout);
         //find the widget ID
-
         Bundle extras = getIntent().getExtras();
         if(extras != null){
             id = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -63,13 +63,21 @@ public class RecipeWidgetConfigActivity extends AppCompatActivity implements
         //update the widget views with recipe data
         remoteViews.setTextViewText(R.id.textView_recipe_name, recipe.getName());
         remoteViews.setTextViewText(R.id.textView_ingredients, recipe.getIngredientListString());
-        //set pending intent on the widget to open recipeDetailsActivity
+        //prepare intent object
         Intent intent = new Intent(this, RecipeDetailsActivity.class);
-        intent.putExtra(Constants.INTENT_EXTRA_RECIPE, recipe);
+        //write Recipe object to parcel. Taken form this solution
+        //http://blog.naboo.space/blog/2013/09/01/parcelable-in-pendingintent/
+        //to write Parcelable in PendingIntent without losing the object data
+
+        Parcel recipeParcel = Parcel.obtain();
+        recipe.writeToParcel(recipeParcel, 0);
+        recipeParcel.setDataPosition(0);
+        intent.putExtra(Constants.INTENT_EXTRA_RECIPE_MARSHALED, recipeParcel.marshall());
+        //set pending intent on the widget to open recipeDetailsActivity
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0,
                 intent,
-                0);
+                PendingIntent.FLAG_CANCEL_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.widget_container, pendingIntent);
         widgetManager.updateAppWidget(id, remoteViews);
         //prepare results from configActivity
