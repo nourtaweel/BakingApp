@@ -3,6 +3,8 @@ package com.techpearl.bakingapp.ui.recipe;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -71,6 +73,8 @@ public class RecipeDetailsFragment extends Fragment implements
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("selected_position", mStepsAdapter.getSelectedPosition());
+        //outState.putParcelable("list_state", mStepsRecyclerView.getLayoutManager().onSaveInstanceState());
+
 
     }
     @Override
@@ -99,6 +103,8 @@ public class RecipeDetailsFragment extends Fragment implements
         if(savedInstanceState != null){
             int savedSelectedPosition = savedInstanceState.getInt("selected_position");
             mStepsAdapter.setSelectedPosition(savedSelectedPosition);
+            //Parcelable listState = savedInstanceState.getParcelable("list_state");
+            //mStepsRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
         }
         return root;
     }
