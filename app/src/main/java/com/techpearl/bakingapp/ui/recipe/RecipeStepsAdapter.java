@@ -96,10 +96,10 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
         @Override
         public void onClick(View v) {
             highlightSelected(getAdapterPosition());
-            mListener.onStepClicked(mSteps.get(getAdapterPosition()));
+            mListener.onStepClicked(getAdapterPosition());
         }
 
-        private void highlightSelected(int newPosition) {
+        public void highlightSelected(int newPosition) {
             int oldPosition = selectedPosition;
             selectedPosition = newPosition;
             notifyItemChanged(selectedPosition);
@@ -108,6 +108,6 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
     }
 
     interface StepClickListener {
-        void onStepClicked(Step step);
+        void onStepClicked(int stepIndex);
     }
 }

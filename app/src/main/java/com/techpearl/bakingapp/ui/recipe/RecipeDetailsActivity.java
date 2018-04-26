@@ -3,6 +3,7 @@ package com.techpearl.bakingapp.ui.recipe;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,6 +15,9 @@ import com.techpearl.bakingapp.data.network.model.Step;
 import com.techpearl.bakingapp.ui.step.StepDetailsActivity;
 import com.techpearl.bakingapp.ui.step.StepDetailsFragment;
 import com.techpearl.bakingapp.ui.step.StepDetailsPresenter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +40,9 @@ implements RecipeDetailsFragment.OnStepClickListener{
     View mStepDetailsContainerView;
     //StepDetailsFragment reference, null if not in two-pane
     private StepDetailsFragment mStepDetailsFragment;
+    //RecipeDetailFragmnet reference
+    private  RecipeDetailsFragment mRecipeDetailsFragment;
+    private RecipeDetailsPresenter mRecipeDetailsPresenter;
 
 
 
@@ -47,21 +54,21 @@ implements RecipeDetailsFragment.OnStepClickListener{
         //if can find details container view, then it is two-pane mode
         mTwoPane = (mStepDetailsContainerView != null);
         //find the static recipeDetailsFragment
-        RecipeDetailsFragment recipeDetailsFragment = (RecipeDetailsFragment)
+        mRecipeDetailsFragment = (RecipeDetailsFragment)
                 getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_recipe_details);
         //get the recipe to display from the starting intent and create a new presenter for the
         // master fragment
         if(getIntent().hasExtra(Constants.INTENT_EXTRA_RECIPE)){
             Recipe recipe = getIntent().getParcelableExtra(Constants.INTENT_EXTRA_RECIPE);
-            new RecipeDetailsPresenter(recipeDetailsFragment, recipe);
+            mRecipeDetailsPresenter = new RecipeDetailsPresenter(mRecipeDetailsFragment, recipe);
         }else if(getIntent().hasExtra(Constants.INTENT_EXTRA_RECIPE_MARSHALED)){
             byte [] bytes = getIntent().getByteArrayExtra(Constants.INTENT_EXTRA_RECIPE_MARSHALED);
             Parcel parcel = Parcel.obtain();
             parcel.unmarshall(bytes, 0, bytes.length);
             parcel.setDataPosition(0);
             Recipe recipe = Recipe.CREATOR.createFromParcel(parcel);
-            new RecipeDetailsPresenter(recipeDetailsFragment, recipe);
+            mRecipeDetailsPresenter = new RecipeDetailsPresenter(mRecipeDetailsFragment, recipe);
         }
         //Todo: remove next code
 /*
@@ -107,23 +114,25 @@ implements RecipeDetailsFragment.OnStepClickListener{
 
     /*callback method when a step is clicked*/
     @Override
-    public void onStepClicked(Step step) {
+    public void onStepClicked(List<Step> steps, int stepIndex) {
         //if not in master/details, open a new activity to show the step details
         if(!mTwoPane){
             Intent intent = new Intent(this, StepDetailsActivity.class);
-            intent.putExtra(Constants.INTENT_EXTRA_STEP, step);
+            intent.putParcelableArrayListExtra(Constants.INTENT_EXTRA_STEPS, new ArrayList<Parcelable>(steps));
+            intent.putExtra(Constants.INTENT_EXTRA_STEP, stepIndex);
             startActivity(intent);
         }//if in master/details, create a new stepDetailsFragment and add it to the screen
         else{
             //create the Fragment
-            mStepDetailsFragment = StepDetailsFragment.newInstance();
+            mStepDetailsFragment = StepDetailsFragment.newInstance(mTwoPane);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.step_detail_container, mStepDetailsFragment)
                     .commit();
             //create the presenter for the fragment
-            new StepDetailsPresenter(mStepDetailsFragment, step, false);
+            new StepDetailsPresenter(mStepDetailsFragment, steps, false, stepIndex);
         }
 
     }
+
 }

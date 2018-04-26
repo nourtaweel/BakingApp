@@ -16,13 +16,19 @@ public interface StepDetailsContract {
         void showFullScreenDialog();
         void goToNormalScreen();
         boolean isActive();
+        void disableBack();
+        void disableNext();
+        void enableNext();
+        void enableBack();
     }
 
     interface Presenter extends BasePresenter{
-        void loadStep(Step step);
+        void loadCurrentStep();
         void openFullScreen();
         void closeFullScreen();
         void onToggleFullScreen();
         void onBackPressedInFullScreenDialog();
+        void onNextStepClicked();
+        void onPreviousStepClicked();
     }
 }

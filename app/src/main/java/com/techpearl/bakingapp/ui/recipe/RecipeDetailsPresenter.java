@@ -46,7 +46,7 @@ public class RecipeDetailsPresenter implements RecipeDetailsContract.Presenter {
     }
 
     @Override
-    public void openStepDetails(@NonNull Step step) {
-        mDetailsView.showStepDetailsUi(step);
+    public void openStepDetails(int stepIndex) {
+        mDetailsView.showStepDetailsUi(mRecipe.getSteps(), stepIndex);
     }
 }

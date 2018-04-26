@@ -22,12 +22,14 @@ import com.techpearl.bakingapp.data.network.model.Recipe;
 import com.techpearl.bakingapp.data.network.model.Step;
 import com.techpearl.bakingapp.ui.step.StepDetailsActivity;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Created by Nour on 0017, 17/4/18.
- * a Fragment the shows a List/Grid of available {@link Step}s
+ * a Fragment the shows a List of available {@link Step}s
  */
 
 public class RecipeDetailsFragment extends Fragment implements
@@ -125,8 +127,8 @@ public class RecipeDetailsFragment extends Fragment implements
     }
 
     @Override
-    public void showStepDetailsUi(Step step) {
-        mListener.onStepClicked(step);
+    public void showStepDetailsUi(List<Step> steps, int stepIndex) {
+        mListener.onStepClicked(steps, stepIndex);
     }
 
     @Override
@@ -135,11 +137,11 @@ public class RecipeDetailsFragment extends Fragment implements
     }
 
     @Override
-    public void onStepClicked(Step step) {
-        mPresenter.openStepDetails(step);
+    public void onStepClicked(int stepIndex) {
+        mPresenter.openStepDetails(stepIndex);
     }
 
     interface OnStepClickListener {
-        void onStepClicked(Step step);
+        void onStepClicked(List<Step> steps, int stepIndex);
     }
 }

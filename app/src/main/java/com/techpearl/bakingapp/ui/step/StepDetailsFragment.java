@@ -1,13 +1,16 @@
 package com.techpearl.bakingapp.ui.step;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +41,7 @@ import com.techpearl.bakingapp.data.network.model.Step;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Nour on 0018, 18/4/18.
@@ -68,13 +72,18 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     @BindView(R.id.main_media_frame)
     View mMediaFrame;
     private long mPosition = 0;
+    private boolean isTwoPane;
+
+    private StepNavigationListener mListener;
 
     public StepDetailsFragment(){
 
     }
 
-    public static StepDetailsFragment newInstance(){
-        return new StepDetailsFragment();
+    public static StepDetailsFragment newInstance(boolean isTwoPane){
+        StepDetailsFragment fragment = new StepDetailsFragment();
+        fragment.isTwoPane = isTwoPane;
+        return fragment;
     }
     @Override
     public void setPresenter(StepDetailsContract.Presenter presenter) {
@@ -88,7 +97,7 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
         if(savedInstanceState != null){
             Bundle presenterSavedState = savedInstanceState.getBundle("presenter_state");
             if(presenterSavedState != null){
-                mPresenter = new StepDetailsPresenter(this, null, false);
+                mPresenter = new StepDetailsPresenter(this, null, false, 0);
                 mPresenter.restoreState(presenterSavedState);
             }
             //mPresenter.restoreState(savedInstanceState.getBundle("presenter_state"));
@@ -137,17 +146,24 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
         if(!step.getVideoURL().isEmpty()){
             mMediaFrame.setVisibility(View.VISIBLE);
             mPlayerView.setVisibility(View.VISIBLE);
+            mThumbnailImageView.setVisibility(View.GONE);
             initExoPlayer(step.getVideoURL());
         }else if(!step.getThumbnailURL().isEmpty()){
             mMediaFrame.setVisibility(View.VISIBLE);
             mThumbnailImageView.setVisibility(View.VISIBLE);
+            mPlayerView.setVisibility(View.GONE);
             Picasso.get()
                     .load(step.getThumbnailURL())
                     .placeholder(R.drawable.ic_camera)
                     .error(R.drawable.ic_camera)
                     .into(mThumbnailImageView);
+        }else {
+            mMediaFrame.setVisibility(View.GONE);
         }
-
+        if(isTwoPane){
+            mBackImageView.setVisibility(View.GONE);
+            mNextImageView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -196,6 +212,8 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     /**
      * release Exoplayer resources*/
     private void releasePlayer(){
+        if(mPlayer == null)
+            return;
         mPlayer.stop();
         mPlayer.release();
         mPlayer = null;
@@ -213,6 +231,26 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     @Override
     public boolean isActive() {
         return isAdded();
+    }
+
+    @Override
+    public void disableBack() {
+        mBackImageView.setEnabled(false);
+    }
+
+    @Override
+    public void disableNext() {
+        mNextImageView.setEnabled(false);
+    }
+
+    @Override
+    public void enableNext() {
+        mNextImageView.setEnabled(true);
+    }
+
+    @Override
+    public void enableBack() {
+        mBackImageView.setEnabled(true);
     }
 
     private void initFullscreenButton() {
@@ -239,4 +277,19 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
         };
     }
 
+    @OnClick(R.id.imageView_next)
+    void onNextClicked(){
+        releasePlayer();
+        mPresenter.onNextStepClicked();
+    }
+
+    @OnClick(R.id.imageView_back)
+    void onBackClicked(){
+        releasePlayer();
+        mPresenter.onPreviousStepClicked();
+    }
+
+    public interface StepNavigationListener{
+        void onNavigateTo(int stepIndex);
+    }
 }

@@ -13,6 +13,8 @@ import com.techpearl.bakingapp.data.network.model.Recipe;
 import com.techpearl.bakingapp.data.network.model.Step;
 import com.techpearl.bakingapp.ui.recipe.RecipeDetailsPresenter;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
 
 /**
@@ -21,7 +23,7 @@ import butterknife.ButterKnife;
  * Created by Nour on 0018, 18/4/18.
  */
 
-public class StepDetailsActivity extends AppCompatActivity {
+public class StepDetailsActivity extends AppCompatActivity{
     //tag for logging
     private final static String TAG = StepDetailsActivity.class.getSimpleName();
 
@@ -36,7 +38,7 @@ public class StepDetailsActivity extends AppCompatActivity {
         //Todo: remove the creation code as never accessed
         if(stepDetailsFragment == null){
             //create the Fragment
-            stepDetailsFragment = StepDetailsFragment.newInstance();
+            stepDetailsFragment = StepDetailsFragment.newInstance(false);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_step, stepDetailsFragment)
@@ -52,16 +54,19 @@ public class StepDetailsActivity extends AppCompatActivity {
         }*/
         //if no saved state is found, create a new presenter
         if(savedInstanceState == null){
-            Step step = null;
+            List<Step> steps = null;
+            int stepIndex = 0;
             //get the step from the starting intent
-            if(getIntent().hasExtra(Constants.INTENT_EXTRA_STEP)){
-                step = getIntent().getParcelableExtra(Constants.INTENT_EXTRA_STEP);
+            if(getIntent().hasExtra(Constants.INTENT_EXTRA_STEPS)){
+                steps = getIntent().getParcelableArrayListExtra(Constants.INTENT_EXTRA_STEPS);
             }
-            //always open fullscreen in landscape
-            //Todo: what happens if no media?
+            if(getIntent().hasExtra(Constants.INTENT_EXTRA_STEP)){
+                stepIndex = getIntent().getIntExtra(Constants.INTENT_EXTRA_STEP, 0);
+            }
+            //open video in fullscreen in landscape
             boolean isLandscape = getResources().getConfiguration().orientation
                     == Configuration.ORIENTATION_LANDSCAPE;
-            new StepDetailsPresenter(stepDetailsFragment, step, isLandscape);
+            new StepDetailsPresenter(stepDetailsFragment, steps, isLandscape, stepIndex);
         }
 
     }
