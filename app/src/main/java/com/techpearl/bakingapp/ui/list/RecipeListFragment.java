@@ -71,8 +71,8 @@ public class RecipeListFragment extends Fragment implements
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_list_recipes, container, false);
-        mRecipesAdapter = new RecipesAdapter(null, this);
         ButterKnife.bind(this, root);
+        mRecipesAdapter = new RecipesAdapter(null, this);
         mRecipesRecyclerView.setLayoutManager(
                 new GridLayoutManager(this.getContext(), numberOfColumns()));
         mRecipesRecyclerView.setAdapter(mRecipesAdapter);

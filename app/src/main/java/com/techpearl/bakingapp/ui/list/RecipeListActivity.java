@@ -1,6 +1,9 @@
 package com.techpearl.bakingapp.ui.list;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -14,6 +17,7 @@ public class RecipeListActivity extends AppCompatActivity implements
         RecipeListFragment.RecipeClickListener{
 
     private static final String TAG = RecipeListActivity.class.getSimpleName();
+    private RecipeListPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +34,7 @@ public class RecipeListActivity extends AppCompatActivity implements
                     .replace(R.id.fragment_recipe_list,recipeListFragment)
                     .commit();
         }
-        new RecipeListPresenter(DataManager.getsInstance(), recipeListFragment);
-
-
+        mPresenter = new RecipeListPresenter(DataManager.getsInstance(), recipeListFragment);
     }
 
     @Override
@@ -40,5 +42,11 @@ public class RecipeListActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, RecipeDetailsActivity.class);
         intent.putExtra(Constants.INTENT_EXTRA_RECIPE, recipe);
         startActivity(intent);
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource(){
+        return mPresenter.getIdlingResource();
     }
 }
