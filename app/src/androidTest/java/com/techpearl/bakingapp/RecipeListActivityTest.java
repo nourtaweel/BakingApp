@@ -49,7 +49,7 @@ public class RecipeListActivityTest {
                 .perform(RecyclerViewActions.scrollTo(hasDescendant(withText(RECIPE_NAME))));
         //click on the view
         onView(withText(RECIPE_NAME)).perform(click());
-        //assert that new screen has the recipe name
+        //assert that details screen has the recipe name
         onView(withId(R.id.textView_name))
                 .check(matches(withText(RECIPE_NAME)));
     }
