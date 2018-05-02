@@ -42,7 +42,7 @@ implements RecipeDetailsFragment.OnStepClickListener{
     //StepDetailsFragment reference, null if not in two-pane
     private StepDetailsFragment mStepDetailsFragment;
     //RecipeDetailFragmnet reference
-    private  RecipeDetailsFragment mRecipeDetailsFragment;
+    private RecipeDetailsFragment mRecipeDetailsFragment;
     private RecipeDetailsPresenter mRecipeDetailsPresenter;
 
 
@@ -71,35 +71,18 @@ implements RecipeDetailsFragment.OnStepClickListener{
             Recipe recipe = Recipe.CREATOR.createFromParcel(parcel);
             mRecipeDetailsPresenter = new RecipeDetailsPresenter(mRecipeDetailsFragment, recipe);
         }
-        //Todo: remove next code
-/*
-        if(recipeDetailsFragment == null){
-            //create the fragment
-            recipeDetailsFragment = RecipeDetailsFragment.newInstance();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_recipe_details, recipeDetailsFragment)
-                    .commit();
-        }*/
 
         //if in two-pane mode, retrieve the previous details fragment if any
         if(mTwoPane && savedInstanceState != null){
             mStepDetailsFragment = (StepDetailsFragment) getSupportFragmentManager()
-                    .getFragment(savedInstanceState, "stepDetailsSavedFragment");
+                    .getFragment(savedInstanceState, Constants.EXTRA_SAVED_DETAILS_FRAGMENT);
             if(mStepDetailsFragment != null){
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.step_detail_container, mStepDetailsFragment)
                         .commit();
             }
-           /* //re-create the presenter
-            Bundle bundle = savedInstanceState.getBundle("presenter_state");
-            if(bundle != null)
-                new StepDetailsPresenter(mStepDetailsFragment,
-                        (Step) bundle.getParcelable("step"),
-                        bundle.getBoolean("is_full_screen"));*/
         }
-
     }
 
     /**
@@ -108,7 +91,9 @@ implements RecipeDetailsFragment.OnStepClickListener{
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if(mStepDetailsFragment != null){
-            getSupportFragmentManager().putFragment(outState, "stepDetailsSavedFragment", mStepDetailsFragment);
+            getSupportFragmentManager().putFragment(outState,
+                    Constants.EXTRA_SAVED_DETAILS_FRAGMENT,
+                    mStepDetailsFragment);
         }
 
     }

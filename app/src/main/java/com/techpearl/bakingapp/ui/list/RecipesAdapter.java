@@ -80,7 +80,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
 
             recipeNameTextView.setText(r.getName());
             //TODO: fix countable issue
-            recipeServingsTextView.setText(r.getServings() + "servings");
+            recipeServingsTextView.setText(String.format("servings: %d", r.getServings()));
         }
 
         @Override

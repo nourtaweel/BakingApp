@@ -36,6 +36,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
+import com.techpearl.bakingapp.Constants;
 import com.techpearl.bakingapp.R;
 import com.techpearl.bakingapp.data.network.model.Step;
 
@@ -95,13 +96,13 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
         super.onActivityCreated(savedInstanceState);
         //retrieve the presenter state & player position if this fragment is getting recreated
         if(savedInstanceState != null){
-            Bundle presenterSavedState = savedInstanceState.getBundle("presenter_state");
+            Bundle presenterSavedState = savedInstanceState.getBundle(Constants.EXTRA_STATE_PRESENTER);
             if(presenterSavedState != null){
                 mPresenter = new StepDetailsPresenter(this, null, false, 0);
                 mPresenter.restoreState(presenterSavedState);
             }
             //mPresenter.restoreState(savedInstanceState.getBundle("presenter_state"));
-            mPosition = savedInstanceState.getLong("player_position");
+            mPosition = savedInstanceState.getLong(Constants.EXTRA_PLAYER_POSITION);
 
         }
     }
@@ -110,10 +111,10 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         //save the presenter state (step object + fullscreen mode boolean)
-        outState.putBundle("presenter_state", mPresenter.getState());
+        outState.putBundle(Constants.EXTRA_STATE_PRESENTER, mPresenter.getState());
         //saving the player position if available
         if(mPlayer != null){
-            outState.putLong("player_position", mPlayer.getCurrentPosition());
+            outState.putLong(Constants.EXTRA_PLAYER_POSITION, mPlayer.getCurrentPosition());
         }
     }
 

@@ -72,11 +72,10 @@ public class RecipeDetailsFragment extends Fragment implements
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("selected_position", mStepsAdapter.getSelectedPosition());
-        //outState.putParcelable("list_state", mStepsRecyclerView.getLayoutManager().onSaveInstanceState());
-
-
+        outState.putInt(Constants.EXTRA_SELECTED_STEP_POSITION,
+                mStepsAdapter.getSelectedPosition());
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -101,10 +100,9 @@ public class RecipeDetailsFragment extends Fragment implements
         mStepsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mStepsRecyclerView.setAdapter(mStepsAdapter);
         if(savedInstanceState != null){
-            int savedSelectedPosition = savedInstanceState.getInt("selected_position");
+            int savedSelectedPosition =
+                    savedInstanceState.getInt(Constants.EXTRA_SELECTED_STEP_POSITION);
             mStepsAdapter.setSelectedPosition(savedSelectedPosition);
-            //Parcelable listState = savedInstanceState.getParcelable("list_state");
-            //mStepsRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
         }
         return root;
     }

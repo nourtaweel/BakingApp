@@ -19,6 +19,14 @@ public class Constants {
     public static final String INTENT_EXTRA_RECIPE_MARSHALED = "extra_recipe_marshaled";
     public static final String INTENT_EXTRA_STEPS = "extra_steps";
 
+    public static final String EXTRA_STATE_PRESENTER = "presenter_state";
+    public static final String EXTRA_STATE_PRESENTER_STEPS = "steps";
+    public static final String EXTRA_STATE_PRESENTER_FULL_SCREEN = "is_full_screen";
+    public static final String EXTRA_STATE_PRESENTER_CURRENT_STEP = "current_step";
+    public static final String EXTRA_PLAYER_POSITION = "player_position";
+    public static final String EXTRA_SELECTED_STEP_POSITION = "selected_position";
+    public static final String EXTRA_SAVED_DETAILS_FRAGMENT = "step_details_saved_fragment";
+
     public static final Recipe MOCK_RECIPE_OBJECT = getMockRecipeObject();
     public static final List<Step> MOCK_STEPS_LIST = getMockStepsList();
     public static final int MOCK_STEP_TEXT = 0;

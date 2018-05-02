@@ -16,6 +16,7 @@ import java.util.List;
 import idlingResource.SimpleIdlingResource;
 
 public class RecipeListPresenter implements RecipeListContract.Presenter {
+    private static final String TAG = RecipeListPresenter.class.getSimpleName();
 
     private final DataManager dataManager;
 
@@ -54,7 +55,6 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
         dataManager.getRecipeList(new RemoteCallback<List<Recipe>>() {
             @Override
             public void onSuccess(List<Recipe> response) {
-                Log.d("Recipes", "count:" + response.size());
                 if(mIdlingResource != null){
                     mIdlingResource.setIdleState(true);
                 }
@@ -66,7 +66,7 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
 
             @Override
             public void onFailure(Throwable throwable) {
-                Log.d("Recipes", "error fetching recipes " + throwable.getMessage());
+                Log.d(TAG, "error fetching recipes " + throwable.getMessage());
                 if(!mRecipeListView.isActive())
                     return;
                 mRecipeListView.hideLoadingIndicator();

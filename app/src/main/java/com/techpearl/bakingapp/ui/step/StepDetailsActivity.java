@@ -44,14 +44,7 @@ public class StepDetailsActivity extends AppCompatActivity{
                     .replace(R.id.fragment_step, stepDetailsFragment)
                     .commit();
         }
-        //recreate the presenter from saved state if any
-       /* if(savedInstanceState != null){
-            Bundle bundle = savedInstanceState.getBundle("presenter_state");
-            new StepDetailsPresenter(stepDetailsFragment,
-                    (Step) bundle.getParcelable("step"),
-                    bundle.getBoolean("is_full_screen"));
-            return;
-        }*/
+
         //if no saved state is found, create a new presenter
         if(savedInstanceState == null){
             List<Step> steps = null;

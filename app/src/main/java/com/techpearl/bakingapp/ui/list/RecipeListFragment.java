@@ -97,9 +97,6 @@ public class RecipeListFragment extends Fragment implements
 
     @Override
     public void showRecipes(List<Recipe> recipes) {
-        for(Recipe recipe : recipes){
-            Log.d("recipe", recipe.getName());
-        }
         mRecipesAdapter.setRecipeList(recipes);
     }
 
