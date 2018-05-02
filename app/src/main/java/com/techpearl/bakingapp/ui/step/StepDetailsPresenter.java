@@ -75,8 +75,7 @@ public class StepDetailsPresenter implements StepDetailsContract.Presenter {
         }else if(mCurrentStep == mSteps.size()-1){
             mView.disableNext();
         }
-        if(mFullScreen && !mSteps.
-                get(mCurrentStep).getVideoURL().isEmpty()){
+        if(mFullScreen && !mSteps.get(mCurrentStep).getVideoURL().isEmpty()){
             mView.showFullScreenDialog();
         }
     }

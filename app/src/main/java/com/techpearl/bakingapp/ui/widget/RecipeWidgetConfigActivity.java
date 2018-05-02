@@ -42,7 +42,7 @@ public class RecipeWidgetConfigActivity extends AppCompatActivity implements
                     .replace(R.id.fragment_recipe_list,recipeListFragment)
                     .commit();
         }
-        new RecipeListPresenter(DataManager.getsInstance(), recipeListFragment);
+        new RecipeListPresenter(this, DataManager.getsInstance(), recipeListFragment);
         //get AppWigetManager inctance
        widgetManager = AppWidgetManager.getInstance(this);
         remoteViews = new RemoteViews(this.getPackageName(), R.layout.recipe_widget_layout);

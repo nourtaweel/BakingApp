@@ -13,6 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.techpearl.bakingapp.Constants;
 import com.techpearl.bakingapp.R;
@@ -38,6 +41,10 @@ public class RecipeListFragment extends Fragment implements
     private RecipesAdapter mRecipesAdapter;
     private RecipeClickListener mListener;
     @BindView(R.id.recyclerView_recipes) RecyclerView mRecipesRecyclerView;
+    @BindView(R.id.loadingIndicator) ProgressBar mLoadingIndicator;
+    @BindView(R.id.textView_error_message) TextView mErrorTextView;
+    @BindView(R.id.imageView_error)ImageView mErrorImage;
+    @BindView(R.id.error_message_container) View mErrorContainer;
 
     /*Required empty constructor*/
     public RecipeListFragment(){
@@ -81,18 +88,17 @@ public class RecipeListFragment extends Fragment implements
 
     @Override
     public void setPresenter(@NonNull RecipeListContract.Presenter presenter) {
-        //TODO : check not null
         mPresenter = presenter;
     }
 
     @Override
     public void showLoadingIndicator() {
-
+        mLoadingIndicator.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoadingIndicator() {
-
+        mLoadingIndicator.setVisibility(View.GONE);
     }
 
     @Override
@@ -101,13 +107,25 @@ public class RecipeListFragment extends Fragment implements
     }
 
     @Override
-    public void showLoadingErrorMessage() {
-
+    public void showLoadingErrorMessage(int code) {
+        switch (code){
+            case RecipeListContract.ERROR_CODE_NO_CONNECTION:
+                mErrorTextView.setText(R.string.message_no_connection);
+                mErrorImage.setImageResource(R.drawable.ic_no_signal_interface_symbol);
+                break;
+            case RecipeListContract.ERROR_CODE_API_FAIL:
+                mErrorTextView.setText(R.string.message_api_fail);
+                mErrorImage.setImageResource(R.drawable.ic_sad_face_on_screen);
+                break;
+        }
+        mErrorContainer.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showRecipeDetailsUi(Recipe recipe) {
-
+        Intent intent = new Intent(this.getContext(), RecipeDetailsActivity.class);
+        intent.putExtra(Constants.INTENT_EXTRA_RECIPE, recipe);
+        startActivity(intent);
     }
 
     @Override
@@ -135,6 +153,6 @@ public class RecipeListFragment extends Fragment implements
     }
 
     public interface RecipeClickListener{
-        public void onRecipeClicked(Recipe recipe);
+        void onRecipeClicked(Recipe recipe);
     }
 }

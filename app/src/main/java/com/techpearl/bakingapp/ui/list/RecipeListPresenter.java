@@ -1,5 +1,6 @@
 package com.techpearl.bakingapp.ui.list;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.util.Log;
 import com.techpearl.bakingapp.data.DataManager;
 import com.techpearl.bakingapp.data.network.RemoteCallback;
 import com.techpearl.bakingapp.data.network.model.Recipe;
+import com.techpearl.bakingapp.utils.ConnectionUtils;
 
 import java.util.List;
 
@@ -20,12 +22,16 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
 
     private final DataManager dataManager;
 
+    private Context mContext;
+
     private final RecipeListContract.View mRecipeListView;
 
     @Nullable private SimpleIdlingResource mIdlingResource;
 
-    public RecipeListPresenter(@NonNull DataManager manager,
+    public RecipeListPresenter(@NonNull Context context,
+                               @NonNull DataManager manager,
                                @NonNull RecipeListContract.View recipeListView){
+        mContext = context;
         dataManager = manager;
         mRecipeListView = recipeListView;
         mRecipeListView.setPresenter(this);
@@ -43,11 +49,14 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
 
     @Override
     public void restoreState(Bundle state) {
-
     }
 
     @Override
     public void loadRecipes() {
+        if(!ConnectionUtils.isConnected(mContext)){
+            mRecipeListView.showLoadingErrorMessage(RecipeListContract.ERROR_CODE_NO_CONNECTION);
+            return;
+        }
         if(mIdlingResource != null){
             mIdlingResource.setIdleState(false);
         }
@@ -70,7 +79,7 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
                 if(!mRecipeListView.isActive())
                     return;
                 mRecipeListView.hideLoadingIndicator();
-                mRecipeListView.showLoadingErrorMessage();
+                mRecipeListView.showLoadingErrorMessage(RecipeListContract.ERROR_CODE_API_FAIL);
             }
         });
     }

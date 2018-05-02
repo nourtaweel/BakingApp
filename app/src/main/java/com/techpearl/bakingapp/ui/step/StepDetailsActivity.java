@@ -35,15 +35,6 @@ public class StepDetailsActivity extends AppCompatActivity{
         //find the static fragment in the layout
         StepDetailsFragment stepDetailsFragment = (StepDetailsFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_step);
-        //Todo: remove the creation code as never accessed
-        if(stepDetailsFragment == null){
-            //create the Fragment
-            stepDetailsFragment = StepDetailsFragment.newInstance(false);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_step, stepDetailsFragment)
-                    .commit();
-        }
 
         //if no saved state is found, create a new presenter
         if(savedInstanceState == null){

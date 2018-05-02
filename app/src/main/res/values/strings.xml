@@ -2,4 +2,6 @@
     <string name="app_name">BakingApp</string>
     <string name="ingredients_label">Ingredients</string>
     <string name="servings_format">Servings: %d</string>
+    <string name="message_no_connection">Oops! \n Looks your device isn\'t connected to the internet</string>
+    <string name="message_api_fail">Oops! \n  Looks something went wrong while fetching data</string>
 </resources>

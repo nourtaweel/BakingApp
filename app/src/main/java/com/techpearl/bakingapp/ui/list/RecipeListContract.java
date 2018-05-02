@@ -27,11 +27,14 @@ import java.util.List;
 * in the main recipe list Fragment*/
 public interface RecipeListContract {
 
+    public static final int ERROR_CODE_NO_CONNECTION = 0;
+    public static final int ERROR_CODE_API_FAIL = 1;
+
     interface View extends BaseView<Presenter>{
         void showLoadingIndicator();
         void hideLoadingIndicator();
         void showRecipes(List<Recipe> recipes);
-        void showLoadingErrorMessage();
+        void showLoadingErrorMessage(int code);
         void showRecipeDetailsUi(Recipe recipe);
         boolean isActive();
 

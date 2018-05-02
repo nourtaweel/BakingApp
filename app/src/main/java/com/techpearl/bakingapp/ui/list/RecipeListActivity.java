@@ -34,14 +34,14 @@ public class RecipeListActivity extends AppCompatActivity implements
                     .replace(R.id.fragment_recipe_list,recipeListFragment)
                     .commit();
         }
-        mPresenter = new RecipeListPresenter(DataManager.getsInstance(), recipeListFragment);
+        mPresenter = new RecipeListPresenter(this,
+                DataManager.getsInstance(),
+                recipeListFragment);
     }
 
     @Override
     public void onRecipeClicked(Recipe recipe) {
-        Intent intent = new Intent(this, RecipeDetailsActivity.class);
-        intent.putExtra(Constants.INTENT_EXTRA_RECIPE, recipe);
-        startActivity(intent);
+        mPresenter.openRecipeDetails(recipe);
     }
 
     @VisibleForTesting
