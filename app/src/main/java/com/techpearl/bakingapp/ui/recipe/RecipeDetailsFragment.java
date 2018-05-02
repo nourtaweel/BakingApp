@@ -39,6 +39,7 @@ public class RecipeDetailsFragment extends Fragment implements
         RecipeStepsAdapter.StepClickListener{
 
     private RecipeStepsAdapter mStepsAdapter;
+    @BindView(R.id.textView_error_message) TextView mErrorTextView;
     @BindView(R.id.textView_name) TextView mNameTextView;
     @BindView(R.id.textView_servings) TextView mServingsNumTextView;
     @BindView(R.id.imageView_recipe_image) ImageView mImageView;
@@ -127,7 +128,7 @@ public class RecipeDetailsFragment extends Fragment implements
 
     @Override
     public void showErrorMessage() {
-
+        mErrorTextView.setVisibility(View.VISIBLE);
     }
 
     @Override

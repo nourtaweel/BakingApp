@@ -41,6 +41,10 @@ public class RecipeDetailsPresenter implements RecipeDetailsContract.Presenter {
 
     @Override
     public void loadRecipe(Recipe recipe) {
+        if(recipe == null){
+            mDetailsView.showErrorMessage();
+            return;
+        }
         mRecipe = recipe;
         mDetailsView.showRecipeDetails(mRecipe);
     }
