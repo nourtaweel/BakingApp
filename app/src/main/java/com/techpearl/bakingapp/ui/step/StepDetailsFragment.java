@@ -101,15 +101,16 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
                 mPresenter = new StepDetailsPresenter(this, null, false, 0);
                 mPresenter.restoreState(presenterSavedState);
             }
-            //mPresenter.restoreState(savedInstanceState.getBundle("presenter_state"));
             mPosition = savedInstanceState.getLong(Constants.EXTRA_PLAYER_POSITION);
-
+            isTwoPane = savedInstanceState.getBoolean(Constants.EXTRA_IS_TWO_PANE);
         }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        //save whether in two-pane
+        outState.putBoolean(Constants.EXTRA_IS_TWO_PANE, isTwoPane);
         //save the presenter state (step object + fullscreen mode boolean)
         outState.putBundle(Constants.EXTRA_STATE_PRESENTER, mPresenter.getState());
         //saving the player position if available

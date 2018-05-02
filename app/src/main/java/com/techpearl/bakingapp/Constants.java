@@ -26,12 +26,14 @@ public class Constants {
     public static final String EXTRA_PLAYER_POSITION = "player_position";
     public static final String EXTRA_SELECTED_STEP_POSITION = "selected_position";
     public static final String EXTRA_SAVED_DETAILS_FRAGMENT = "step_details_saved_fragment";
+    public static final String EXTRA_IS_TWO_PANE = "saved_is_two_pane";
 
     public static final Recipe MOCK_RECIPE_OBJECT = getMockRecipeObject();
     public static final List<Step> MOCK_STEPS_LIST = getMockStepsList();
     public static final int MOCK_STEP_TEXT = 0;
     public static final int MOCK_STEP_IMAGE = 1;
     public static final int MOCK_STEP_VIDEO = 2;
+
 
     private static Recipe getMockRecipeObject(){
         Recipe r =new Recipe();
