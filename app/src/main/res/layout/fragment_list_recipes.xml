@@ -11,9 +11,10 @@
     <ProgressBar
         android:id="@+id/loadingIndicator"
         android:layout_gravity="center"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:visibility="gone"/>
+        android:layout_width="@dimen/loading_indicator_dim"
+        android:layout_height="@dimen/loading_indicator_dim"
+        android:visibility="gone"
+        android:indeterminate="true"/>
 
     <LinearLayout
         android:id="@+id/error_message_container"
@@ -25,15 +26,16 @@
         android:gravity="center">
         <ImageView
             android:id="@+id/imageView_error"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            app:srcCompat="@drawable/ic_no_signal_interface_symbol"/>
+            android:layout_width="@dimen/error_loading_image_dim"
+            android:layout_height="@dimen/error_loading_image_dim"
+            app:srcCompat="@drawable/ic_no_signal_interface_symbol"
+            android:contentDescription="@string/error_image"/>
         <TextView
             android:id="@+id/textView_error_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            tools:text="Oops!\n Looks that something went wrong"
+            tools:text="@string/message_no_connection"
             android:textColor="@color/colorAccent"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             />

@@ -5,4 +5,11 @@
     <string name="message_no_connection">Oops! \n Looks your device isn\'t connected to the internet</string>
     <string name="message_api_fail">Oops! \n  Looks something went wrong while fetching data</string>
     <string name="error_no_recipe">Sorry, there is no recipe to show!</string>
+    <string name="step_type_icon">step type icon</string>
+    <string name="recipe_image">recipe image</string>
+    <string name="icon_ingredients">ingredients icon</string>
+    <string name="step_image">step image</string>
+    <string name="go_next">go to next step</string>
+    <string name="go_back">go to previous step</string>
+    <string name="error_image">error image</string>
 </resources>

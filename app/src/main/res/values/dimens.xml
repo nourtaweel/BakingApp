@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_cards">8dp</dimen>
     <dimen name="margin_text">8dp</dimen>
     <dimen name="step_type_dim">35dp</dimen>
     <dimen name="step_item_margin">10dp</dimen>
-    <dimen name="widget_padding">4dp</dimen>
+    <dimen name="widget_margin">4dp</dimen>
+    <dimen name="widget_padding">20dp</dimen>
+    <dimen name="widget_padding_top">50dp</dimen>
+    <dimen name="recipe_image_width">100dp</dimen>
+    <dimen name="recipe_card_width">300dp</dimen>
+    <dimen name="recipe_card_height">300dp</dimen>
+    <dimen name="recipe_card_image_heigth">200dp</dimen>
+    <dimen name="small_icon">30dp</dimen>
+    <dimen name="media_height">250dp</dimen>
+    <dimen name="step_card_height">200dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_med">16dp</dimen>
+    <dimen name="arrow_dim">50dp</dimen>
+    <dimen name="details_image_heigth">150dp</dimen>
+    <dimen name="loading_indicator_dim">50dp</dimen>
+    <dimen name="error_loading_image_dim">150dp</dimen>
 
 </resources>

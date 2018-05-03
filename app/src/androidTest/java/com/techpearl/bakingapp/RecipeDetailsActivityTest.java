@@ -35,9 +35,7 @@ public class RecipeDetailsActivityTest {
             new ActivityTestRule<>(RecipeDetailsActivity.class,false,false);
     @Test
     public void startActivity_showRecipeDetails(){
-        Intent intent = new Intent();
-        intent.putExtra(Constants.INTENT_EXTRA_RECIPE, Constants.MOCK_RECIPE_OBJECT);
-        mRecipeDetailsRule.launchActivity(intent);
+        launchActivityWithIntent();
         onView(withId(R.id.textView_name))
                 .check(matches(withText(Constants.MOCK_RECIPE_OBJECT.getName())));
         onView(withId(R.id.textView_ingredients))
@@ -67,9 +65,7 @@ public class RecipeDetailsActivityTest {
 
     @Test
     public void clickOnStep_launchActivity(){
-        Intent intent = new Intent();
-        intent.putExtra(Constants.INTENT_EXTRA_RECIPE, Constants.MOCK_RECIPE_OBJECT);
-        mRecipeDetailsRule.launchActivity(intent);
+        launchActivityWithIntent();
         String shortDescription = Constants.MOCK_STEPS_LIST.get(Constants.MOCK_STEP_TEXT)
                 .getShortDescription();
         String longDescription = Constants.MOCK_STEPS_LIST.get(Constants.MOCK_STEP_TEXT)

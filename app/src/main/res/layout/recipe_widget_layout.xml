@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/widget_container"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/widget_padding"
-    android:paddingLeft="20dp"
-    android:paddingEnd="20dp"
-    android:paddingStart="20dp"
-    android:paddingTop="50dp"
+    android:layout_margin="@dimen/widget_margin"
+    android:paddingLeft="@dimen/widget_padding"
+    android:paddingEnd="@dimen/widget_padding"
+    android:paddingStart="@dimen/widget_padding"
+    android:paddingTop="@dimen/widget_padding_top"
     android:background="@drawable/notepad_paper"
     android:scrollbars="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -18,12 +18,11 @@
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.Display1"
             android:layout_gravity="center"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorPrimaryDark"
             />
         <TextView
             android:id="@+id/textView_ingredients"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
             />
     </LinearLayout>

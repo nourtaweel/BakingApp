@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView_recipe"
-    android:layout_width="300dp"
-    android:layout_height="300dp"
+    android:layout_width="@dimen/recipe_card_width"
+    android:layout_height="@dimen/recipe_card_height"
     android:layout_margin="@dimen/margin_cards">
 
     <android.support.constraint.ConstraintLayout
@@ -15,20 +16,21 @@
         <ImageView
             android:id="@+id/imageView_recipe_image"
             android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:src="@drawable/ic_recipe"
+            android:layout_height="@dimen/recipe_card_image_heigth"
+            app:srcCompat="@drawable/ic_recipe"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/recipe_image"/>
 
         <TextView
             android:id="@+id/textView_recipe_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textView_servings"
             app:layout_constraintHorizontal_bias="0.05"
@@ -40,10 +42,12 @@
             android:id="@+id/textView_servings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView_recipe_name"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="8 servings" />
+            tools:text="8 servings"
+             />
 
     </android.support.constraint.ConstraintLayout>
 

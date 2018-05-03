@@ -6,17 +6,19 @@
     android:id="@+id/step_detail_scroll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/step_detail_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <FrameLayout
             android:id="@+id/main_media_frame"
             android:layout_width="0dp"
-            android:layout_height="250dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="@dimen/media_height"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,17 +34,18 @@
                 android:id="@+id/imageView_thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:srcCompat="@drawable/ic_recipe" />
+                tools:srcCompat="@drawable/ic_recipe"
+                android:contentDescription="@string/step_image"/>
 
         </FrameLayout>
 
         <android.support.v7.widget.CardView
             android:id="@+id/description_container"
             android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="@dimen/step_card_height"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/main_media_frame">
@@ -52,9 +55,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_small"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/main_media_frame"
@@ -63,23 +66,28 @@
 
         <ImageView
             android:id="@+id/imageView_back"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="@dimen/arrow_dim"
+            android:layout_height="@dimen/arrow_dim"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_med"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/description_container"
-            app:srcCompat="@drawable/back_arrow_selector" />
+            app:srcCompat="@drawable/back_arrow_selector"
+            android:contentDescription="@string/go_back"
+             />
 
         <ImageView
             android:id="@+id/imageView_next"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="@dimen/arrow_dim"
+            android:layout_height="@dimen/arrow_dim"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_med"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/description_container"
-            app:srcCompat="@drawable/next_arrow_selector" />
+            app:srcCompat="@drawable/next_arrow_selector"
+            android:layout_marginRight="@dimen/margin_large"
+            android:contentDescription="@string/go_next"/>
 
 
 

@@ -18,7 +18,8 @@
         <ImageView
             android:id="@+id/imageView_recipe_image"
             android:layout_width="match_parent"
-            android:layout_height="150dp" />
+            android:layout_height="@dimen/details_image_heigth"
+            android:contentDescription="@string/recipe_image"/>
 
         <include layout="@layout/ingredients_layout"/>
 
@@ -26,7 +27,6 @@
             android:id="@+id/recyclerView_steps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
            />
 
 
