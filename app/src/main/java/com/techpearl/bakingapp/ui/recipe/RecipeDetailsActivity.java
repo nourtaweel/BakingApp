@@ -45,8 +45,6 @@ implements RecipeDetailsFragment.OnStepClickListener{
     private RecipeDetailsFragment mRecipeDetailsFragment;
     private RecipeDetailsPresenter mRecipeDetailsPresenter;
 
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +61,8 @@ implements RecipeDetailsFragment.OnStepClickListener{
         if(getIntent().hasExtra(Constants.INTENT_EXTRA_RECIPE)){
             Recipe recipe = getIntent().getParcelableExtra(Constants.INTENT_EXTRA_RECIPE);
             mRecipeDetailsPresenter = new RecipeDetailsPresenter(mRecipeDetailsFragment, recipe);
-        }else if(getIntent().hasExtra(Constants.INTENT_EXTRA_RECIPE_MARSHALED)){
+        }//in case the intent is comming from the widget, get the data and display
+        else if(getIntent().hasExtra(Constants.INTENT_EXTRA_RECIPE_MARSHALED)){
             byte [] bytes = getIntent().getByteArrayExtra(Constants.INTENT_EXTRA_RECIPE_MARSHALED);
             Parcel parcel = Parcel.obtain();
             parcel.unmarshall(bytes, 0, bytes.length);
@@ -121,6 +120,7 @@ implements RecipeDetailsFragment.OnStepClickListener{
 
     }
 
+    //to skip some tests in single pane mode
     @VisibleForTesting
     public boolean isTwoPane(){
         return mTwoPane;

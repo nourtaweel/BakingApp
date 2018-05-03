@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 /**
  * Created by Nour on 0011, 11/4/18.
+ * A class that represents a single step of a recipe
  */
 
 public class Step implements Parcelable

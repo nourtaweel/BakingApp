@@ -17,13 +17,14 @@ public class RecipeListActivity extends AppCompatActivity implements
         RecipeListFragment.RecipeClickListener{
 
     private static final String TAG = RecipeListActivity.class.getSimpleName();
+    //MVP presenter refernce
     private RecipeListPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //get the fragment from FragmentManager
         RecipeListFragment recipeListFragment = (RecipeListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_recipe_list);
         if(recipeListFragment == null){
@@ -34,6 +35,7 @@ public class RecipeListActivity extends AppCompatActivity implements
                     .replace(R.id.fragment_recipe_list,recipeListFragment)
                     .commit();
         }
+        //create the presenter
         mPresenter = new RecipeListPresenter(this,
                 DataManager.getsInstance(),
                 recipeListFragment);

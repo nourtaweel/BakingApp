@@ -8,7 +8,7 @@ import retrofit2.Response;
  * Created by Nour on 0013, 13/4/18.
  *
  * A Wrapper class based on retrofit Callback
- * this is used by the presenter layer to define actions upon remote calls (success/fail)
+ * this is used by the MVP presenter layer to define actions upon remote calls (success/fail)
  */
 
 public abstract class RemoteCallback<T> implements Callback<T> {

@@ -18,14 +18,15 @@ import java.util.List;
 import idlingResource.SimpleIdlingResource;
 
 public class RecipeListPresenter implements RecipeListContract.Presenter {
-    private static final String TAG = RecipeListPresenter.class.getSimpleName();
 
+    private static final String TAG = RecipeListPresenter.class.getSimpleName();
+    //singleton data source
     private final DataManager dataManager;
 
     private Context mContext;
-
+    //MVP view
     private final RecipeListContract.View mRecipeListView;
-
+    //Idling resource for testing purposes
     @Nullable private SimpleIdlingResource mIdlingResource;
 
     public RecipeListPresenter(@NonNull Context context,
@@ -37,11 +38,13 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
         mRecipeListView.setPresenter(this);
     }
 
+    //start loading recipes
     @Override
     public void start() {
         loadRecipes();
     }
 
+    //this presenter is state less
     @Override
     public Bundle getState() {
         return null;
@@ -49,26 +52,33 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
 
     @Override
     public void restoreState(Bundle state) {
+        //do nothing, stateless presenter
     }
 
+    //start loading data from network
     @Override
     public void loadRecipes() {
         mRecipeListView.showLoadingIndicator();
+        //check connection, if not present show an error message
         if(!ConnectionUtils.isConnected(mContext)){
             mRecipeListView.showLoadingErrorMessage(RecipeListContract.ERROR_CODE_NO_CONNECTION);
             return;
         }
+        //prepare idling resource not idle just before network interaction
         if(mIdlingResource != null){
             mIdlingResource.setIdleState(false);
         }
+        //init loading
         dataManager.getRecipeList(new RemoteCallback<List<Recipe>>() {
             @Override
             public void onSuccess(List<Recipe> response) {
                 if(mIdlingResource != null){
+                    //now we are idle
                     mIdlingResource.setIdleState(true);
                 }
                 if(!mRecipeListView.isActive())
                     return;
+                //display recipes on the View
                 mRecipeListView.showRecipes(response);
             }
 
@@ -77,6 +87,7 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
                 Log.d(TAG, "error fetching recipes " + throwable.getMessage());
                 if(!mRecipeListView.isActive())
                     return;
+                //display error message
                 mRecipeListView.showLoadingErrorMessage(RecipeListContract.ERROR_CODE_API_FAIL);
             }
         });

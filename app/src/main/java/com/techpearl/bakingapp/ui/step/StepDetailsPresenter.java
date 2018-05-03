@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Created by Nour on 0018, 18/4/18.
+ * MVP presenter of step details screen
  */
 
 public class StepDetailsPresenter implements StepDetailsContract.Presenter {
@@ -44,6 +45,7 @@ public class StepDetailsPresenter implements StepDetailsContract.Presenter {
         loadCurrentStep();
     }
 
+    //returns a bundle that holds the state of this Presenter
     @Override
     public Bundle getState() {
         Bundle bundle = new Bundle();
@@ -56,6 +58,7 @@ public class StepDetailsPresenter implements StepDetailsContract.Presenter {
         return bundle;
     }
 
+    //restores this Presenter's state
     @Override
     public void restoreState(Bundle state) {
         if(state == null){
@@ -69,12 +72,13 @@ public class StepDetailsPresenter implements StepDetailsContract.Presenter {
     @Override
     public void loadCurrentStep() {
         mView.showStepDetails(mSteps.get(mCurrentStep));
-        //if reached first step, disable back button
+        //if first step, disable back button
         if(mCurrentStep == 0){
             mView.disableBack();
-        }else if(mCurrentStep == mSteps.size()-1){
+        }//if last step, disable next button
+        else if(mCurrentStep == mSteps.size()-1){
             mView.disableNext();
-        }
+        }//if full screen mode and a video is available display it in full screen
         if(mFullScreen && !mSteps.get(mCurrentStep).getVideoURL().isEmpty()){
             mView.showFullScreenDialog();
         }
@@ -82,16 +86,21 @@ public class StepDetailsPresenter implements StepDetailsContract.Presenter {
 
     @Override
     public void openFullScreen() {
+        //make the MVP View to open full screen
         mView.showFullScreenDialog();
+        //set presenter state
         mFullScreen = true;
     }
 
     @Override
     public void closeFullScreen() {
+        //make the MVP View to exit full screen
         mView.goToNormalScreen();
+        //unset fullscreen state
         mFullScreen = false;
     }
 
+    //used to toggle between both modes
     @Override
     public void onToggleFullScreen() {
         if(mFullScreen){
@@ -101,6 +110,7 @@ public class StepDetailsPresenter implements StepDetailsContract.Presenter {
         }
     }
 
+    //pressing back in full-screen mode causes exit from it
     @Override
     public void onBackPressedInFullScreenDialog() {
         if(mFullScreen){
@@ -108,8 +118,10 @@ public class StepDetailsPresenter implements StepDetailsContract.Presenter {
         }
     }
 
+    //callback when next button is clicked
     @Override
     public void onNextStepClicked() {
+        //move one step forward, unless the last step has been reached
         if(mCurrentStep < mSteps.size()){
             mCurrentStep++;
             mView.enableBack();
@@ -117,6 +129,7 @@ public class StepDetailsPresenter implements StepDetailsContract.Presenter {
         }
     }
 
+    //callback when next button is clicked
     @Override
     public void onPreviousStepClicked() {
         //if not the first step, go back

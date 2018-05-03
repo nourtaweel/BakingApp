@@ -60,6 +60,7 @@ public class RecipeListFragment extends Fragment implements
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        //the Activity that contains this fragment MUST implement the interface for callback method
         try {
             mListener = (RecipeClickListener) context;
         }catch (ClassCastException exp){
@@ -70,6 +71,7 @@ public class RecipeListFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        //start the Presenter loading recipes
         mPresenter.start();
     }
 
@@ -89,11 +91,13 @@ public class RecipeListFragment extends Fragment implements
 
     @Override
     public void setPresenter(@NonNull RecipeListContract.Presenter presenter) {
+        //set the Presenter
         mPresenter = presenter;
     }
 
     @Override
     public void showLoadingIndicator() {
+        //hide all but loading
         mRecipesRecyclerView.setVisibility(View.GONE);
         mErrorContainer.setVisibility(View.GONE);
         mLoadingIndicator.setVisibility(View.VISIBLE);
@@ -101,12 +105,15 @@ public class RecipeListFragment extends Fragment implements
 
     @Override
     public void showRecipes(List<Recipe> recipes) {
+        //set the adapter data
         mRecipesAdapter.setRecipeList(recipes);
+        //hide all but recyclerView
         mRecipesRecyclerView.setVisibility(View.VISIBLE);
         mErrorContainer.setVisibility(View.GONE);
         mLoadingIndicator.setVisibility(View.GONE);
     }
 
+    //show an error message and an image based on an error code
     @Override
     public void showLoadingErrorMessage(int code) {
         switch (code){
@@ -119,11 +126,13 @@ public class RecipeListFragment extends Fragment implements
                 mErrorImage.setImageResource(R.drawable.ic_sad_face_on_screen);
                 break;
         }
+        //hide all but error view
         mErrorContainer.setVisibility(View.VISIBLE);
         mLoadingIndicator.setVisibility(View.GONE);
         mRecipesRecyclerView.setVisibility(View.GONE);
     }
 
+    //opens new Activity to show details
     @Override
     public void showRecipeDetailsUi(Recipe recipe) {
         Intent intent = new Intent(this.getContext(), RecipeDetailsActivity.class);
@@ -150,15 +159,18 @@ public class RecipeListFragment extends Fragment implements
         return Math.round(width / widthDividerPx);
     }
 
+    //callback when a recipe is clicked
     @Override
     public void onRecipeClicked(Recipe recipe) {
         mListener.onRecipeClicked(recipe);
     }
 
+    //an interface to setup communication between this fragment and hosting Activity
     public interface RecipeClickListener{
         void onRecipeClicked(Recipe recipe);
     }
 
+    //onClick on error view to refresh
     @OnClick(R.id.error_message_container)
     public void refresh(){
         if(mPresenter != null){

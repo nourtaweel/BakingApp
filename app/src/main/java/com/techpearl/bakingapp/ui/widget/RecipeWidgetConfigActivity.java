@@ -19,6 +19,7 @@ import com.techpearl.bakingapp.ui.recipe.RecipeDetailsActivity;
 
 /**
  * Created by Nour on 0024, 24/4/18.
+ * Configuration Activity for the widget, similar to RecipeListActivity
  */
 
 public class RecipeWidgetConfigActivity extends AppCompatActivity implements
@@ -43,7 +44,7 @@ public class RecipeWidgetConfigActivity extends AppCompatActivity implements
                     .commit();
         }
         new RecipeListPresenter(this, DataManager.getsInstance(), recipeListFragment);
-        //get AppWigetManager inctance
+        //get AppWidgetManager instance
        widgetManager = AppWidgetManager.getInstance(this);
         remoteViews = new RemoteViews(this.getPackageName(), R.layout.recipe_widget_layout);
         //find the widget ID

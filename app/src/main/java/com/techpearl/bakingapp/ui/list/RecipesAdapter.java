@@ -28,11 +28,11 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
     private List<Recipe> mRecipes;
     private RecipeClickListener mListener;
 
-    public RecipesAdapter(List<Recipe> recipes, RecipeClickListener listener){
+    RecipesAdapter(List<Recipe> recipes, RecipeClickListener listener){
         mRecipes = recipes;
         mListener = listener;
     }
-    public void setRecipeList(List<Recipe> recipeList){
+    void setRecipeList(List<Recipe> recipeList){
         this.mRecipes = recipeList;
         notifyDataSetChanged();
     }
@@ -63,12 +63,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         @BindView(R.id.imageView_recipe_image) ImageView recipeImageView;
         @BindView(R.id.textView_recipe_name) TextView recipeNameTextView;
         @BindView(R.id.textView_servings) TextView recipeServingsTextView;
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
-        public void bind(int index){
+        void bind(int index){
             //bind the views with data
             Recipe r = mRecipes.get(index);
             if(!r.getImage().isEmpty()){
@@ -79,7 +79,6 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
             }
 
             recipeNameTextView.setText(r.getName());
-            //TODO: fix countable issue
             recipeServingsTextView.setText(String.format("servings: %d", r.getServings()));
         }
 
@@ -90,6 +89,6 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
     }
 
     public interface RecipeClickListener{
-        public void onRecipeClicked(Recipe recipe);
+        void onRecipeClicked(Recipe recipe);
     }
 }

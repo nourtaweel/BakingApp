@@ -9,12 +9,15 @@ import com.techpearl.bakingapp.data.network.model.Step;
 
 /**
  * Created by Nour on 0017, 17/4/18.
+ * MVP presenter implementation
  */
 
 public class RecipeDetailsPresenter implements RecipeDetailsContract.Presenter {
 
+    //MVP View reference
     private final RecipeDetailsContract.View mDetailsView;
 
+    //the recipe to show
     @Nullable
     private Recipe mRecipe;
 
@@ -29,6 +32,7 @@ public class RecipeDetailsPresenter implements RecipeDetailsContract.Presenter {
         loadRecipe(mRecipe);
     }
 
+    //stateless presenter
     @Override
     public Bundle getState() {
         return null;
@@ -41,11 +45,13 @@ public class RecipeDetailsPresenter implements RecipeDetailsContract.Presenter {
 
     @Override
     public void loadRecipe(Recipe recipe) {
+        //if no recipe, display error message
         if(recipe == null){
             mDetailsView.showErrorMessage();
             return;
         }
         mRecipe = recipe;
+        //cause the View to display the recipe object
         mDetailsView.showRecipeDetails(mRecipe);
     }
 

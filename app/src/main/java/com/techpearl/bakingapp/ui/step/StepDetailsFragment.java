@@ -75,8 +75,6 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     private long mPosition = 0;
     private boolean isTwoPane;
 
-    private StepNavigationListener mListener;
-
     public StepDetailsFragment(){
 
     }
@@ -122,6 +120,7 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     @Override
     public void onResume() {
         super.onResume();
+        //start the presenter
         mPresenter.start();
     }
 
@@ -134,23 +133,30 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
                 container,
                 false);
         ButterKnife.bind(this, root);
+        //hide media frame at first
         mMediaFrame.setVisibility(View.GONE);
         mPlayerView.setVisibility(View.GONE);
         mThumbnailImageView.setVisibility(View.GONE);
+        //prepare fullscreen button and dialog
+        //credit to https://geoffledak.com/blog/2017/09/11/how-to-add-a-fullscreen-toggle-button-to-exoplayer-in-android/
         initFullscreenButton();
         initFullscreenDialog();
         return root;
     }
 
+    //display step data
     @Override
     public void showStepDetails(Step step) {
+        //set the description text
         mStepDescriptionTextView.setText(step.getDescription());
+        //show the player if a video url is available
         if(!step.getVideoURL().isEmpty()){
             mMediaFrame.setVisibility(View.VISIBLE);
             mPlayerView.setVisibility(View.VISIBLE);
             mThumbnailImageView.setVisibility(View.GONE);
             initExoPlayer(step.getVideoURL());
-        }else if(!step.getThumbnailURL().isEmpty()){
+        }//else, show image if an image is available
+        else if(!step.getThumbnailURL().isEmpty()){
             mMediaFrame.setVisibility(View.VISIBLE);
             mThumbnailImageView.setVisibility(View.VISIBLE);
             mPlayerView.setVisibility(View.GONE);
@@ -159,28 +165,34 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
                     .placeholder(R.drawable.ic_camera)
                     .error(R.drawable.ic_camera)
                     .into(mThumbnailImageView);
-        }else {
+        }//if no image and no video, hide the media frame altogether
+        else {
             mMediaFrame.setVisibility(View.GONE);
         }
+        //if in two pane mode, hide navigation buttons in this fragment
         if(isTwoPane){
             mBackImageView.setVisibility(View.GONE);
             mNextImageView.setVisibility(View.GONE);
         }
     }
 
+    //prepare fullScreenDialog and move the player to it
     @Override
     public void showFullScreenDialog() {
         ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
         mFullScreenDialog.addContentView(mPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        //change the image in the player to shrink icon
         mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_skrink));
         mFullScreenDialog.show();
     }
 
+    //close the fullScreenDialog and move the player back
     @Override
     public void goToNormalScreen() {
         ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
         ((FrameLayout) getActivity().findViewById(R.id.main_media_frame)).addView(mPlayerView);
         mFullScreenDialog.dismiss();
+        //change the image in the player to expand icon
         mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_expand));
     }
 
@@ -291,7 +303,4 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
         mPresenter.onPreviousStepClicked();
     }
 
-    public interface StepNavigationListener{
-        void onNavigateTo(int stepIndex);
-    }
 }

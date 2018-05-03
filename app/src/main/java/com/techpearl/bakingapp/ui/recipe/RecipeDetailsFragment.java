@@ -31,23 +31,25 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Nour on 0017, 17/4/18.
- * a Fragment the shows a List of available {@link Step}s
+ * a Fragment the shows the ingredients and a List of available {@link Step}s
+ * of a {@link Recipe}
  */
 
 public class RecipeDetailsFragment extends Fragment implements
         RecipeDetailsContract.View,
         RecipeStepsAdapter.StepClickListener{
-
+    //steps adapter
     private RecipeStepsAdapter mStepsAdapter;
+    //views
     @BindView(R.id.textView_error_message) TextView mErrorTextView;
     @BindView(R.id.textView_name) TextView mNameTextView;
     @BindView(R.id.textView_servings) TextView mServingsNumTextView;
     @BindView(R.id.imageView_recipe_image) ImageView mImageView;
     @BindView(R.id.textView_ingredients) TextView mIngredientsTextView;
     @BindView(R.id.recyclerView_steps) RecyclerView mStepsRecyclerView;
-
+    //MVP presenter reference
     private RecipeDetailsContract.Presenter mPresenter;
-
+    //listener for clicks on steps
     private OnStepClickListener mListener;
 
     //required empty constructor
@@ -62,6 +64,7 @@ public class RecipeDetailsFragment extends Fragment implements
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        //The hosting Activity must implement this interface
         try{
             mListener = (OnStepClickListener) context;
         }catch (ClassCastException exp){
@@ -73,6 +76,7 @@ public class RecipeDetailsFragment extends Fragment implements
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        //saving selected step index
         outState.putInt(Constants.EXTRA_SELECTED_STEP_POSITION,
                 mStepsAdapter.getSelectedPosition());
     }
@@ -80,6 +84,7 @@ public class RecipeDetailsFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        //start the presenter
         mPresenter.start();
     }
 
@@ -98,9 +103,11 @@ public class RecipeDetailsFragment extends Fragment implements
                 false);
         mStepsAdapter = new RecipeStepsAdapter(null, this);
         ButterKnife.bind(this, root);
+        //setup the recyclerView
         mStepsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mStepsRecyclerView.setAdapter(mStepsAdapter);
         if(savedInstanceState != null){
+            //restore the selected step index if any
             int savedSelectedPosition =
                     savedInstanceState.getInt(Constants.EXTRA_SELECTED_STEP_POSITION);
             mStepsAdapter.setSelectedPosition(savedSelectedPosition);
@@ -110,9 +117,11 @@ public class RecipeDetailsFragment extends Fragment implements
 
     @Override
     public void showRecipeDetails(Recipe recipe) {
+        //display recipe data
         mNameTextView.setText(recipe.getName());
         mServingsNumTextView.setText(String.format(getString(R.string.servings_format)
                 , recipe.getServings()));
+        //if no image, hide the image view
         if(recipe.getImage().isEmpty()){
             mImageView.setVisibility(View.GONE);
         }else {
@@ -123,6 +132,7 @@ public class RecipeDetailsFragment extends Fragment implements
                     .into(mImageView);
         }
         mIngredientsTextView.setText(recipe.getIngredientListString());
+        //set adapter data
         mStepsAdapter.setSteps(recipe.getSteps());
     }
 
@@ -141,11 +151,13 @@ public class RecipeDetailsFragment extends Fragment implements
         return isAdded();
     }
 
+    //callback from the adapter
     @Override
     public void onStepClicked(int stepIndex) {
         mPresenter.openStepDetails(stepIndex);
     }
 
+    //An interface to allow this fragment communicate with hosting Activity
     interface OnStepClickListener {
         void onStepClicked(List<Step> steps, int stepIndex);
     }

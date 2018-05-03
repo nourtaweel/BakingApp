@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 
 /**
  * Created by Nour on 0011, 11/4/18.
+ * API client that describes its endpoint
  */
 
 public interface BakingApiClient {

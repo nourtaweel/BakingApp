@@ -2,6 +2,7 @@ package com.techpearl.bakingapp.data.network.model;
 
 /**
  * Created by Nour on 0011, 11/4/18.
+ * A class that represents an Ingredient of a recipe
  */
 
 
