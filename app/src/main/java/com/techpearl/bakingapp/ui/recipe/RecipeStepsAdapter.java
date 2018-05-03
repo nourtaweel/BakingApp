@@ -58,7 +58,6 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
     @Override
     public void onBindViewHolder(@NonNull StepViewHolder holder, int position) {
         holder.bind(position);
-        //holder.itemView.setSelected(selectedPosition == position);
     }
 
 

@@ -1,12 +1,15 @@
 package com.techpearl.bakingapp;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Parcelable;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.techpearl.bakingapp.ui.step.StepDetailsActivity;
 
+import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
@@ -86,12 +90,15 @@ public class StepDetailsActivityTest {
     }
 
     @Test
-    public void startActivityWithIntent_thirdStep_textImage(){
+    public void startActivityWithIntent_thirdStep_textVideo(){
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra(Constants.INTENT_EXTRA_STEPS,
                 new ArrayList<Parcelable>(Constants.MOCK_STEPS_LIST));
         intent.putExtra(Constants.INTENT_EXTRA_STEP, Constants.MOCK_STEP_VIDEO);
         mStepDetailsActivityRule.launchActivity(intent);
+        //only run this in portrait, in landscape Activity would start fullscreen video
+        int dir = mStepDetailsActivityRule.getActivity().getResources().getConfiguration().orientation;
+        Assume.assumeTrue(dir == Configuration.ORIENTATION_PORTRAIT);
         String descriptionText = Constants.MOCK_STEPS_LIST
                 .get(Constants.MOCK_STEP_VIDEO)
                 .getDescription();
@@ -119,7 +126,7 @@ public class StepDetailsActivityTest {
         intent.putExtra(Constants.INTENT_EXTRA_STEP, Constants.MOCK_STEP_IMAGE);
         mStepDetailsActivityRule.launchActivity(intent);
         onView(withId(R.id.imageView_back))
-                .perform(click());
+                .perform(scrollTo(), click());
         //get description of previos step to verify it is displayed
         String descriptionText = Constants.MOCK_STEPS_LIST
                 .get(Constants.MOCK_STEP_TEXT)
@@ -136,9 +143,13 @@ public class StepDetailsActivityTest {
                 new ArrayList<Parcelable>(Constants.MOCK_STEPS_LIST));
         intent.putExtra(Constants.INTENT_EXTRA_STEP, Constants.MOCK_STEP_IMAGE);
         mStepDetailsActivityRule.launchActivity(intent);
+        //only run this in portrait, in landscape Activity would start fullscreen video
+        int dir = mStepDetailsActivityRule.getActivity().getResources().getConfiguration().orientation;
+        Assume.assumeTrue(dir == Configuration.ORIENTATION_PORTRAIT);
+
         //click on next arrow
         onView(withId(R.id.imageView_next))
-                .perform(click());
+                .perform(scrollTo(), click());
         //get description of next step to verify it is displayed
         String descriptionText = Constants.MOCK_STEPS_LIST
                 .get(Constants.MOCK_STEP_VIDEO)
