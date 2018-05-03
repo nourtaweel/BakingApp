@@ -81,6 +81,7 @@ public class RecipeDetailsActivityTest {
     @Test
     public void clickOnStep_twoPaneMode_navigationArrowsNotDisplayed(){
         launchActivityWithIntent();
+        //preform this test only in two pane
         Assume.assumeTrue(mRecipeDetailsRule.getActivity().isTwoPane());
         onView(withId(R.id.recyclerView_steps))
                 .perform(RecyclerViewActions.scrollToPosition(Constants.MOCK_STEP_TEXT));
