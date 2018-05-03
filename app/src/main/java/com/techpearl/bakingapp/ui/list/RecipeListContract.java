@@ -32,7 +32,6 @@ public interface RecipeListContract {
 
     interface View extends BaseView<Presenter>{
         void showLoadingIndicator();
-        void hideLoadingIndicator();
         void showRecipes(List<Recipe> recipes);
         void showLoadingErrorMessage(int code);
         void showRecipeDetailsUi(Recipe recipe);

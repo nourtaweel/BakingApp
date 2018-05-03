@@ -53,6 +53,7 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
 
     @Override
     public void loadRecipes() {
+        mRecipeListView.showLoadingIndicator();
         if(!ConnectionUtils.isConnected(mContext)){
             mRecipeListView.showLoadingErrorMessage(RecipeListContract.ERROR_CODE_NO_CONNECTION);
             return;
@@ -60,7 +61,6 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
         if(mIdlingResource != null){
             mIdlingResource.setIdleState(false);
         }
-        mRecipeListView.showLoadingIndicator();
         dataManager.getRecipeList(new RemoteCallback<List<Recipe>>() {
             @Override
             public void onSuccess(List<Recipe> response) {
@@ -69,7 +69,6 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
                 }
                 if(!mRecipeListView.isActive())
                     return;
-                mRecipeListView.hideLoadingIndicator();
                 mRecipeListView.showRecipes(response);
             }
 
@@ -78,7 +77,6 @@ public class RecipeListPresenter implements RecipeListContract.Presenter {
                 Log.d(TAG, "error fetching recipes " + throwable.getMessage());
                 if(!mRecipeListView.isActive())
                     return;
-                mRecipeListView.hideLoadingIndicator();
                 mRecipeListView.showLoadingErrorMessage(RecipeListContract.ERROR_CODE_API_FAIL);
             }
         });

@@ -26,6 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Nour on 0015, 15/4/18.
@@ -93,17 +94,17 @@ public class RecipeListFragment extends Fragment implements
 
     @Override
     public void showLoadingIndicator() {
+        mRecipesRecyclerView.setVisibility(View.GONE);
+        mErrorContainer.setVisibility(View.GONE);
         mLoadingIndicator.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideLoadingIndicator() {
-        mLoadingIndicator.setVisibility(View.GONE);
     }
 
     @Override
     public void showRecipes(List<Recipe> recipes) {
         mRecipesAdapter.setRecipeList(recipes);
+        mRecipesRecyclerView.setVisibility(View.VISIBLE);
+        mErrorContainer.setVisibility(View.GONE);
+        mLoadingIndicator.setVisibility(View.GONE);
     }
 
     @Override
@@ -119,6 +120,8 @@ public class RecipeListFragment extends Fragment implements
                 break;
         }
         mErrorContainer.setVisibility(View.VISIBLE);
+        mLoadingIndicator.setVisibility(View.GONE);
+        mRecipesRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
@@ -154,5 +157,12 @@ public class RecipeListFragment extends Fragment implements
 
     public interface RecipeClickListener{
         void onRecipeClicked(Recipe recipe);
+    }
+
+    @OnClick(R.id.error_message_container)
+    public void refresh(){
+        if(mPresenter != null){
+            mPresenter.start();
+        }
     }
 }
