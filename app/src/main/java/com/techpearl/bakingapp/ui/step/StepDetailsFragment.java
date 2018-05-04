@@ -53,6 +53,7 @@ import butterknife.OnClick;
 
 public class StepDetailsFragment extends Fragment implements StepDetailsContract.View{
 
+    private static final String TAG = StepDetailsFragment.class.getSimpleName();
     private StepDetailsContract.Presenter mPresenter;
     @BindView(R.id.textView_step_desc)
     TextView mStepDescriptionTextView;
@@ -101,6 +102,7 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
                 mPresenter.restoreState(presenterSavedState);
             }
             mPosition = savedInstanceState.getLong(Constants.EXTRA_PLAYER_POSITION);
+            Log.d(TAG, "retreving " + mPosition);
             isTwoPane = savedInstanceState.getBoolean(Constants.EXTRA_IS_TWO_PANE);
             mPlayWhenReady = savedInstanceState.getBoolean(Constants.EXTRA_PLAYER_PLAY_WHEN_READY);
         }
@@ -115,6 +117,7 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
         outState.putBundle(Constants.EXTRA_STATE_PRESENTER, mPresenter.getState());
         //saving the player position if available
         if(mPlayer != null){
+            Log.d(TAG, "saving state" +mPosition +"");
             outState.putLong(Constants.EXTRA_PLAYER_POSITION, mPlayer.getCurrentPosition());
             outState.putBoolean(Constants.EXTRA_PLAYER_PLAY_WHEN_READY, mPlayer.getPlayWhenReady());
         }
@@ -123,9 +126,11 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "saving state"+mPosition+"");
         //start the presenter
         mPresenter.start();
     }
+
 
     @Nullable
     @Override
@@ -229,16 +234,18 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     /**
      * release Exoplayer resources*/
     private void releasePlayer(){
-        if(mPlayer == null)
-            return;
-        mPlayer.stop();
-        mPlayer.release();
-        mPlayer = null;
+        if(mPlayer != null){
+            mPlayWhenReady = mPlayer.getPlayWhenReady();
+            mPosition = mPlayer.getContentPosition();
+            mPlayer.stop();
+            mPlayer.release();
+            mPlayer = null;
+        }
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         if(mPlayer != null){
             releasePlayer();
         }
