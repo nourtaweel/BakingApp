@@ -24,6 +24,7 @@ public class Constants {
     public static final String EXTRA_STATE_PRESENTER_FULL_SCREEN = "is_full_screen";
     public static final String EXTRA_STATE_PRESENTER_CURRENT_STEP = "current_step";
     public static final String EXTRA_PLAYER_POSITION = "player_position";
+    public static final String EXTRA_PLAYER_PLAY_WHEN_READY = "player_play_when_ready";
     public static final String EXTRA_SELECTED_STEP_POSITION = "selected_position";
     public static final String EXTRA_SAVED_DETAILS_FRAGMENT = "step_details_saved_fragment";
     public static final String EXTRA_IS_TWO_PANE = "saved_is_two_pane";
@@ -35,6 +36,7 @@ public class Constants {
     public static final int MOCK_STEP_TEXT = 0;
     public static final int MOCK_STEP_IMAGE = 1;
     public static final int MOCK_STEP_VIDEO = 2;
+
 
 
     private static Recipe getMockRecipeObject(){

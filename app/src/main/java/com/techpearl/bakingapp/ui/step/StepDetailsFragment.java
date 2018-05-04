@@ -74,6 +74,7 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
     View mMediaFrame;
     private long mPosition = 0;
     private boolean isTwoPane;
+    private boolean mPlayWhenReady = true;
 
     public StepDetailsFragment(){
 
@@ -101,6 +102,7 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
             }
             mPosition = savedInstanceState.getLong(Constants.EXTRA_PLAYER_POSITION);
             isTwoPane = savedInstanceState.getBoolean(Constants.EXTRA_IS_TWO_PANE);
+            mPlayWhenReady = savedInstanceState.getBoolean(Constants.EXTRA_PLAYER_PLAY_WHEN_READY);
         }
     }
 
@@ -114,6 +116,7 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
         //saving the player position if available
         if(mPlayer != null){
             outState.putLong(Constants.EXTRA_PLAYER_POSITION, mPlayer.getCurrentPosition());
+            outState.putBoolean(Constants.EXTRA_PLAYER_PLAY_WHEN_READY, mPlayer.getPlayWhenReady());
         }
     }
 
@@ -220,7 +223,7 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
                 .createMediaSource(Uri.parse(videoURL));
         mPlayer.prepare(videoSource);
         mPlayer.seekTo(mPosition);
-        mPlayer.setPlayWhenReady(true);
+        mPlayer.setPlayWhenReady(mPlayWhenReady);
     }
 
     /**
