@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -69,17 +70,4 @@ public class DrawableMatcher extends TypeSafeMatcher<View> {
         }
     }
 
-    /**
-     * Created by Nour on 0001, 1/5/18.
-     */
-
-    public static class EspressoTestMatchers {
-        public static Matcher<View> withDrawable(final int resourceId) {
-            return new DrawableMatcher(resourceId);
-        }
-
-        public static Matcher<View> noDrawable() {
-            return new DrawableMatcher(-1);
-        }
-    }
 }

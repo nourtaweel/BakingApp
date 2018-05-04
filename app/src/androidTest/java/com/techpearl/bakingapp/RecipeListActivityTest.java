@@ -8,6 +8,8 @@ import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.techpearl.bakingapp.testingUtils.DrawableMatcher;
+import com.techpearl.bakingapp.testingUtils.EspressoTestMatchers;
 import com.techpearl.bakingapp.ui.list.RecipeListActivity;
 
 import org.junit.After;
@@ -46,7 +48,7 @@ public class RecipeListActivityTest {
     public void clickRecipe_launchRecipeDetails(){
         //scroll to view with text RECIPE_NAME
         onView(withId(R.id.recyclerView_recipes))
-                .perform(RecyclerViewActions.scrollTo(hasDescendant(withText(RECIPE_NAME))));
+                .perform(RecyclerViewActions.scrollToHolder(EspressoTestMatchers.withHolderContainsText(RECIPE_NAME)));
         //click on the view
         onView(withText(RECIPE_NAME)).perform(click());
         //assert that details screen has the recipe name

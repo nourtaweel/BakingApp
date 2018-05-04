@@ -20,7 +20,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.techpearl.bakingapp.testingUtils.DrawableMatcher.EspressoTestMatchers.withDrawable;
+import static com.techpearl.bakingapp.testingUtils.EspressoTestMatchers.withDrawable;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 

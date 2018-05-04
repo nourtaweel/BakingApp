@@ -59,7 +59,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         return mRecipes.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         @BindView(R.id.imageView_recipe_image) ImageView recipeImageView;
         @BindView(R.id.textView_recipe_name) TextView recipeNameTextView;
         @BindView(R.id.textView_servings) TextView recipeServingsTextView;
