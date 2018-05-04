@@ -236,10 +236,9 @@ public class StepDetailsFragment extends Fragment implements StepDetailsContract
         mPlayer = null;
     }
 
-
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
         if(mPlayer != null){
             releasePlayer();
         }
