@@ -20,8 +20,19 @@
 
             </intent-filter>
         </activity>
-        <activity android:name=".ui.recipe.RecipeDetailsActivity" />
-        <activity android:name=".ui.step.StepDetailsActivity" />
+        <activity android:name=".ui.recipe.RecipeDetailsActivity"
+            android:parentActivityName=".ui.list.RecipeListActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.list.RecipeListActivity"/>
+        </activity>
+        <activity android:name=".ui.step.StepDetailsActivity"
+            android:parentActivityName=".ui.recipe.RecipeDetailsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.recipe.RecipeDetailsActivity"/>
+        </activity>
         <activity android:name=".ui.widget.RecipeWidgetConfigActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>

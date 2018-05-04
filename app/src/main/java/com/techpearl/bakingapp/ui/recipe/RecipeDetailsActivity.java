@@ -6,7 +6,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.techpearl.bakingapp.Constants;
@@ -117,9 +119,19 @@ implements RecipeDetailsFragment.OnStepClickListener{
             //create the presenter for the fragment
             new StepDetailsPresenter(mStepDetailsFragment, steps, false, stepIndex);
         }
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     //to skip some tests in single pane mode
     @VisibleForTesting
     public boolean isTwoPane(){

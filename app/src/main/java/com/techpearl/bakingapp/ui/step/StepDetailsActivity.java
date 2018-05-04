@@ -4,8 +4,10 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.techpearl.bakingapp.Constants;
 import com.techpearl.bakingapp.R;
@@ -52,6 +54,16 @@ public class StepDetailsActivity extends AppCompatActivity{
                     == Configuration.ORIENTATION_LANDSCAPE;
             new StepDetailsPresenter(stepDetailsFragment, steps, isLandscape, stepIndex);
         }
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
